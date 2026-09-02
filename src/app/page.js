@@ -66,7 +66,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative w-full min-h-screen md:h-screen bg-[#FFE600] overflow-x-hidden md:overflow-hidden select-none flex flex-col justify-between font-sans">
+    <main className="relative w-full h-screen bg-[#FFE600] overflow-hidden select-none flex flex-col font-sans">
       <CustomCursor />
 
       {/* 60fps Animated Canvas Background with Floating TVs & Pop Stars */}
@@ -75,8 +75,8 @@ export default function Home() {
       {/* Fast CRT TV Static Channel Wipe */}
       <P4TVStatic isVisible={isWiping} />
 
-      {/* Top Header HUD */}
-      <header className="relative z-40 w-full px-4 sm:px-8 md:px-12 pt-3 pb-2.5 border-b-3 sm:border-b-4 border-black bg-[#FFE600] flex items-center justify-between shadow-sm gap-2">
+      {/* Fixed Top Header HUD (Never covers content) */}
+      <header className="relative z-40 w-full flex-shrink-0 px-4 sm:px-8 md:px-12 py-2.5 border-b-3 sm:border-b-4 border-black bg-[#FFE600] flex items-center justify-between shadow-sm gap-2">
         {/* Left: Nexus Badge */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="w-8 h-8 sm:w-9 sm:h-9 bg-black border-2 border-black flex-shrink-0 flex items-center justify-center text-[#FFE600] font-display font-p4-display text-xl sm:text-2xl shadow-[2px_2px_0px_#FF6600] sm:shadow-[3px_3px_0px_#FF6600]">
@@ -96,8 +96,8 @@ export default function Home() {
         <WeatherWidget />
       </header>
 
-      {/* Interactive Main Viewport */}
-      <div className="relative z-30 w-full flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 py-2 sm:py-3 overflow-y-auto md:overflow-hidden">
+      {/* Fully Scrollable Viewport (Zero Clipping, Natural Smooth Scrolling) */}
+      <div className="relative z-30 w-full flex-1 overflow-y-auto overflow-x-hidden flex flex-col items-center justify-start p-4 sm:px-8 md:px-12">
         <AnimatePresence mode="wait">
           
           {/* MAIN MENU */}
@@ -108,7 +108,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center py-3 md:py-0"
+              className="w-full max-w-6xl my-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center py-2"
             >
               {/* Left Column: Interactive Retro TV Monitor (Desktop) */}
               <div className="hidden lg:flex lg:col-span-5 items-center justify-center">
@@ -117,8 +117,8 @@ export default function Home() {
 
               {/* Right Column: Hero Commands */}
               <div className="lg:col-span-7 flex flex-col items-center lg:items-end w-full">
-                <div className="text-center lg:text-right mb-3 sm:mb-4">
-                  <div className="inline-block p4-skew bg-[#0c0b05] text-[#FFE600] px-3 py-0.5 border-2 border-black mb-1.5 shadow-[3px_3px_0px_#FF6600]">
+                <div className="text-center lg:text-right mb-2.5 sm:mb-3">
+                  <div className="inline-block p4-skew bg-[#0c0b05] text-[#FFE600] px-3 py-0.5 border-2 border-black mb-1 shadow-[3px_3px_0px_#FF6600]">
                     <span className="p4-skew-reverse font-mono text-[10px] sm:text-xs font-black tracking-[0.25em] sm:tracking-[0.3em] uppercase block">
                       NEXUS PROTOCOL // TACTICAL ARCHITECT
                     </span>
@@ -131,7 +131,7 @@ export default function Home() {
                     </span>
                   </h1>
                   
-                  <p className="font-mono text-[10px] sm:text-xs text-[#0c0b05] font-black mt-2 tracking-wider sm:tracking-widest uppercase">
+                  <p className="font-mono text-[10px] sm:text-xs text-[#0c0b05] font-black mt-1.5 tracking-wider sm:tracking-widest uppercase">
                     CSE UNDERGRAD // C++ & FRONTEND ARCHITECT
                   </p>
                 </div>
@@ -160,35 +160,35 @@ export default function Home() {
 
           {/* STATUS SCREEN */}
           {activeTab === 'STATUS' && !isWiping && (
-            <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
+            <div className="w-full max-w-5xl my-auto py-2">
               <P4StatusView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* EQUIP / ARSENAL SCREEN */}
           {activeTab === 'ARSENAL' && !isWiping && (
-            <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
+            <div className="w-full max-w-5xl my-auto py-2">
               <P4ArsenalView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* SYSTEM PILLARS SCREEN */}
           {activeTab === 'SOCIAL_LINKS' && !isWiping && (
-            <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
+            <div className="w-full max-w-5xl my-auto py-2">
               <P4SocialLinksView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* SIDE QUESTS / HOBBIES SCREEN */}
           {activeTab === 'HOBBIES' && !isWiping && (
-            <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
+            <div className="w-full max-w-5xl my-auto py-2">
               <HobbiesView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* COMMS TERMINAL TRANSMIT SCREEN */}
           {activeTab === 'SYSTEM' && !isWiping && (
-            <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
+            <div className="w-full max-w-4xl my-auto py-2">
               <P4SystemView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
@@ -196,12 +196,12 @@ export default function Home() {
         </AnimatePresence>
       </div>
 
-      {/* Footer */}
-      <footer className="relative z-40 w-full px-4 sm:px-8 md:px-12 py-2 border-t-2 border-black bg-[#FFE600] flex justify-between items-center text-[9px] sm:text-[10px] font-mono text-[#0c0b05] font-bold uppercase tracking-wider sm:tracking-widest shadow-inner">
+      {/* Fixed Bottom Footer (Never covers content) */}
+      <footer className="relative z-40 w-full flex-shrink-0 px-4 sm:px-8 md:px-12 py-2 border-t-2 border-black bg-[#FFE600] flex justify-between items-center text-[9px] sm:text-[10px] font-mono text-[#0c0b05] font-bold uppercase tracking-wider sm:tracking-widest shadow-inner">
         <span className="truncate">NEXUS CONSOLE ONLINE // PRESS [ESC] TO RETURN</span>
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <span className="rainbow-strip w-10 sm:w-14 h-2 border border-black hidden sm:inline-block" />
-          <span>NEXUS ENGINE // v6.2</span>
+          <span>NEXUS ENGINE // v6.5</span>
         </div>
       </footer>
     </main>
