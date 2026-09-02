@@ -54,28 +54,28 @@ export default function Home() {
       {/* Fast CRT TV Static Channel Wipe */}
       <P4TVStatic isVisible={isWiping} />
 
-      {/* Persona 4 Golden Top Header HUD */}
+      {/* Top Header HUD */}
       <header className="relative z-40 w-full px-4 sm:px-8 md:px-12 pt-3 pb-2.5 border-b-3 sm:border-b-4 border-black bg-[#FFE600] flex items-center justify-between shadow-sm gap-2">
-        {/* Left: Investigation Team Badge */}
+        {/* Left: Alpha Badge */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-black border-2 border-black flex-shrink-0 flex items-center justify-center text-[#FFE600] font-display font-p4-display text-lg sm:text-xl shadow-[2px_2px_0px_#FF6600] sm:shadow-[3px_3px_0px_#FF6600]">
-            P4
+          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-black border-2 border-black flex-shrink-0 flex items-center justify-center text-[#FFE600] font-display font-p4-display text-xl sm:text-2xl shadow-[2px_2px_0px_#FF6600] sm:shadow-[3px_3px_0px_#FF6600]">
+            α
           </div>
           <div className="min-w-0">
             <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight truncate">
-              INABA INVESTIGATION TEAM
+              ALPHA SYSTEMS // SPECIAL OPERATIONS
             </span>
             <span className="font-mono text-[8px] sm:text-[9px] text-[#665500] tracking-wider hidden md:block font-bold">
-              YASOGAMI HIGH // MIDNIGHT CHANNEL MONITORING
+              PROJECT ALPHA // TACTICAL ARCHITECT CONSOLE
             </span>
           </div>
         </div>
 
-        {/* Right: Weather & Time Widget */}
+        {/* Right: Telemetry & Time Widget */}
         <WeatherWidget />
       </header>
 
-      {/* Interactive Main Viewport (Fully Flexible on Mobile & Desktop) */}
+      {/* Interactive Main Viewport (Zero Overlaps) */}
       <div className="relative z-30 w-full flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 py-3 overflow-y-auto md:overflow-hidden">
         <AnimatePresence mode="wait">
           
@@ -89,7 +89,7 @@ export default function Home() {
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center py-4 md:py-0"
             >
-              {/* Left Column: Interactive Retro TV Set (Desktop) */}
+              {/* Left Column: Interactive Retro TV Monitor (Desktop) */}
               <div className="hidden lg:flex lg:col-span-5 items-center justify-center">
                 <P4RetroTVStage />
               </div>
@@ -99,7 +99,7 @@ export default function Home() {
                 <div className="text-center lg:text-right mb-4 sm:mb-6">
                   <div className="inline-block p4-skew bg-[#0c0b05] text-[#FFE600] px-3 py-0.5 border-2 border-black mb-2 shadow-[3px_3px_0px_#FF6600]">
                     <span className="p4-skew-reverse font-mono text-[10px] sm:text-xs font-black tracking-[0.25em] sm:tracking-[0.3em] uppercase block">
-                      INVESTIGATION COMMAND
+                      ALPHA PROTOCOL // TACTICAL CONSOLE
                     </span>
                   </div>
 
@@ -115,13 +115,13 @@ export default function Home() {
                   </p>
                 </div>
 
-                {/* 4 P4 Command Buttons */}
+                {/* 4 Command Buttons */}
                 <div className="w-full max-w-md flex flex-col">
                   {[
-                    { id: 'STATUS', label: '01. STATUS', desc: 'Operative ID & Social Stats Pentagon' },
-                    { id: 'ARSENAL', label: '02. EQUIP (ARSENAL)', desc: 'Weaponry & Featured Projects' },
-                    { id: 'SOCIAL_LINKS', label: '03. SOCIAL LINKS', desc: 'Tarot Arcana Bonds & Skills' },
-                    { id: 'SYSTEM', label: '04. MIDNIGHT CHANNEL', desc: 'Dispatch Broadcast Transmission' },
+                    { id: 'STATUS', label: '01. OPERATIVE DOSSIER', desc: 'Engineer ID & Technical Radar Pentagon' },
+                    { id: 'ARSENAL', label: '02. ARSENAL (PROJECTS)', desc: 'Engine Systems & Web Platforms' },
+                    { id: 'SOCIAL_LINKS', label: '03. SYSTEM PILLARS', desc: 'Architectural Disciplines & Milestones' },
+                    { id: 'SYSTEM', label: '04. COMMS TERMINAL', desc: 'Secure Relay Signal Transmission' },
                   ].map((item) => (
                     <P4MenuButton
                       key={item.id}
@@ -150,14 +150,14 @@ export default function Home() {
             </div>
           )}
 
-          {/* SOCIAL LINKS SCREEN */}
+          {/* SYSTEM PILLARS SCREEN */}
           {activeTab === 'SOCIAL_LINKS' && !isWiping && (
             <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
               <P4SocialLinksView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
-          {/* SYSTEM / MIDNIGHT CHANNEL TRANSMIT SCREEN */}
+          {/* COMMS TERMINAL TRANSMIT SCREEN */}
           {activeTab === 'SYSTEM' && !isWiping && (
             <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
               <P4SystemView onBack={() => handleTabChange('MENU')} />
@@ -167,12 +167,12 @@ export default function Home() {
         </AnimatePresence>
       </div>
 
-      {/* Persona 4 Golden Footer */}
+      {/* Footer */}
       <footer className="relative z-40 w-full px-4 sm:px-8 md:px-12 py-2 border-t-2 border-black bg-[#FFE600] flex justify-between items-center text-[9px] sm:text-[10px] font-mono text-[#0c0b05] font-bold uppercase tracking-wider sm:tracking-widest shadow-inner">
-        <span className="truncate">INVESTIGATION UNIT // [ESC] TO RETURN</span>
+        <span className="truncate">ALPHA CONSOLE ONLINE // [ESC] TO RETURN</span>
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <span className="rainbow-strip w-10 sm:w-14 h-2 border border-black hidden sm:inline-block" />
-          <span>PERSONA 4 GOLDEN // v5.8</span>
+          <span>ALPHA ENGINE // v6.0</span>
         </div>
       </footer>
     </main>

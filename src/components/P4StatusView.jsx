@@ -3,17 +3,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { sound } from '@/utils/soundEngine';
 import SocialStatsRadar from './SocialStatsRadar';
-import { Shield, Zap, Sparkles, Award, User, Users, Star } from 'lucide-react';
+import { Shield, Zap, Sparkles, Award, User, Code2, Terminal, Cpu } from 'lucide-react';
 
-const TEAM_MEMBERS = [
-  { name: 'YU NARUKAMI', arcana: 'FOOL', role: 'LEADER / ALL-AFFINITY' },
-  { name: 'YOSUKE HANAMURA', arcana: 'MAGICIAN', role: 'WIND / SPEED TACTICS' },
-  { name: 'CHIE SATONAKA', arcana: 'CHARIOT', role: 'PHYSICAL / ICE STRIKES' },
-  { name: 'YUKIKO AMAGI', arcana: 'PRIESTESS', role: 'FIRE / RECOVERY SPECIALIST' },
-  { name: 'KANJI TATSUMI', arcana: 'EMPEROR', role: 'ELECTRIC / HEAVY BRAWLER' },
-  { name: 'RISE KUJIKAWA', arcana: 'LOVERS', role: 'SUPPORT / RADAR ANALYSIS' },
-  { name: 'TEDDIE', arcana: 'STAR', role: 'ICE / TV WORLD NAVIGATOR' },
-  { name: 'NAOTO SHIROGANE', arcana: 'FORTUNE', role: 'LIGHT & DARK / ACE DETECTIVE' }
+const DISCIPLINES = [
+  { name: 'LOW-LEVEL C++', focus: 'CORE SYSTEMS', desc: 'Simulations, Memory Safety, RAII & SIMD' },
+  { name: 'MODERN FRONTEND', focus: 'NEXT.JS / REACT', desc: 'SSR, Micro-interactions, Zustand & State' },
+  { name: 'GRAPHICS & SHADERS', focus: 'OPENGL / GLSL', desc: 'Dynamic Shaders, Procedural Noise & Lighting' },
+  { name: 'MOTION CHOREOGRAPHY', focus: 'TACTILE UX', desc: 'Framer Motion, GSAP & Web Audio API' },
+  { name: 'ALGORITHMS & MATH', focus: 'COMPUTATIONAL', desc: 'Spatial Hashing, Pathfinding & Data Structs' },
+  { name: 'SOFTWARE ARCHITECTURE', focus: 'ENGINEERING', desc: 'Modular Component Trees & CI/CD Pipelines' },
 ];
 
 export default function P4StatusView({ onBack }) {
@@ -33,13 +31,13 @@ export default function P4StatusView({ onBack }) {
       transition={{ duration: 0.25, ease: "easeOut" }}
       className="w-full max-w-5xl text-black ml-auto pb-6"
     >
-      {/* P4 Header Bar */}
+      {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 sm:border-b-4 border-black pb-2.5 sm:pb-3 mb-4 sm:mb-5">
         <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="w-3 sm:w-4 h-7 sm:h-8 bg-[#FF6600] border-2 border-black flex-shrink-0" />
           <div>
             <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight">
-              INVESTIGATION TEAM // OPERATIVE DOSSIER
+              ALPHA PROTOCOL // OPERATIVE DOSSIER
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none mt-0.5">
               STATUS <span className="text-[#FF6600] text-2xl sm:text-3xl">/ LEVEL 99</span>
@@ -58,77 +56,77 @@ export default function P4StatusView({ onBack }) {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5">
         
-        {/* Left Column: Yasogami High Student ID Card & Team Roster */}
-        <div className="lg:col-span-6 space-y-4">
+        {/* Left Column: Engineer ID Card & Discipline Matrix */}
+        <div className="lg:col-span-6 space-y-3.5 sm:space-y-4">
           
           {/* Main ID Card */}
-          <div className="bg-[#0c0b05] text-[#FFE600] border-4 border-black p-5 md:p-6 p4-skew shadow-[8px_8px_0px_#FF6600]">
+          <div className="bg-[#0c0b05] text-[#FFE600] border-3 sm:border-4 border-black p-4 sm:p-5 md:p-6 p4-skew shadow-[6px_6px_0px_#FF6600] sm:shadow-[8px_8px_0px_#FF6600]">
             <div className="p4-skew-reverse">
               {/* ID Header */}
               <div className="flex justify-between items-center border-b-2 border-[#FFE600]/30 pb-2 mb-3">
                 <div className="flex items-center gap-2 font-mono text-xs text-white">
                   <User size={15} className="text-[#FF6600]" />
-                  <span>YASOGAMI HIGH // CSE DEPARTMENT</span>
+                  <span>ABES ENGINEERING COLLEGE // CSE</span>
                 </div>
-                <span className="font-mono text-[10px] bg-[#FFE600] text-black px-1.5 py-0.5 font-bold">
-                  SEMESTER VI
+                <span className="font-mono text-[9px] sm:text-[10px] bg-[#FFE600] text-black px-1.5 py-0.5 font-bold">
+                  FINAL YEAR
                 </span>
               </div>
 
-              <h3 className="font-display font-p4-display text-3xl md:text-4xl text-white tracking-wider leading-tight">
+              <h3 className="font-display font-p4-display text-3xl sm:text-4xl text-white tracking-wider leading-tight">
                 VARUN KUMAR KAUSHIK
               </h3>
               <p className="font-mono text-xs text-gray-300 mt-1 mb-3">
-                CSE UNDERGRAD // ABES ENGINEERING COLLEGE
+                SYSTEMS ARCHITECT // FRONTEND SPECIALIST
               </p>
 
               <p className="font-mono text-xs text-gray-200 leading-relaxed bg-[#1a1708] p-3 border-l-4 border-[#FFE600] mb-4">
                 Specialized in building high-performance C++ game architectures and reactive, animated frontend web platforms. Blends deep computational theory with playful, tactile user experiences.
               </p>
 
-              {/* Persona Manifestation */}
-              <div className="border-t border-[#FFE600]/20 pt-3">
-                <div className="flex justify-between text-xs font-mono mb-1">
-                  <span className="text-gray-400">INITIAL PERSONA:</span>
-                  <span className="text-[#FFE600] font-bold">IZANAGI (FULL BUILD)</span>
+              {/* Primary Directives */}
+              <div className="border-t border-[#FFE600]/20 pt-3 space-y-1 font-mono text-xs">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">PRIMARY FOCUS:</span>
+                  <span className="text-[#FFE600] font-bold">C++ & REACT PLATFORMS</span>
                 </div>
-                <div className="flex justify-between text-xs font-mono">
-                  <span className="text-gray-400">ARCANA:</span>
-                  <span className="text-white font-bold">0. THE FOOL / INVESTIGATION TEAM</span>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">CORE COMPETENCY:</span>
+                  <span className="text-white font-bold">GAME ENGINES & KINETIC UI</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Investigation Team Tactical Roster Matrix (100% Vector) */}
-          <div className="bg-[#0c0b05] border-4 border-black p-4 p4-skew shadow-[8px_8px_0px_#0c0b05]">
+          {/* Engineering Disciplines Matrix */}
+          <div className="bg-[#0c0b05] border-3 sm:border-4 border-black p-3.5 sm:p-4 p4-skew shadow-[6px_6px_0px_#0c0b05] sm:shadow-[8px_8px_0px_#0c0b05]">
             <div className="p4-skew-reverse">
               <div className="flex items-center justify-between border-b-2 border-[#FFE600]/30 pb-2 mb-3">
                 <div className="flex items-center gap-2 font-mono text-xs text-[#FFE600] font-bold uppercase">
-                  <Users size={16} className="text-[#FF6600]" />
-                  <span>INABA INVESTIGATION SQUAD // S-LINK ROSTER</span>
+                  <Terminal size={16} className="text-[#FF6600]" />
+                  <span>ENGINEERING DISCIPLINES & PROTOCOLS</span>
                 </div>
                 <span className="text-[9px] font-mono bg-[#FFE600] text-black px-1.5 py-0.2 font-black">
-                  ALL-OUT READY
+                  VERIFIED
                 </span>
               </div>
 
-              {/* Tactical Roster Grid */}
+              {/* Grid */}
               <div className="grid grid-cols-2 gap-2 font-mono text-xs">
-                {TEAM_MEMBERS.map((m, i) => (
-                  <div key={i} className="bg-[#18160a] p-2 border border-[#FFE600]/25 flex items-center justify-between">
+                {DISCIPLINES.map((d, i) => (
+                  <div key={i} className="bg-[#18160a] p-2 border border-[#FFE600]/25 flex flex-col justify-between">
                     <div>
                       <span className="text-white font-bold block text-[11px] leading-tight truncate">
-                        {m.name}
+                        {d.name}
                       </span>
-                      <span className="text-[9px] text-gray-400 block">
-                        {m.role}
+                      <span className="text-[8px] sm:text-[9px] text-[#FFE600] font-bold block mt-0.5">
+                        {d.focus}
                       </span>
                     </div>
-                    <span className="text-[9px] text-[#FFE600] font-black ml-1 flex-shrink-0">
-                      {m.arcana}
+                    <span className="text-[8px] text-gray-400 block mt-1 leading-tight">
+                      {d.desc}
                     </span>
                   </div>
                 ))}
@@ -138,16 +136,16 @@ export default function P4StatusView({ onBack }) {
 
         </div>
 
-        {/* Right Column: Persona 4 Social Stats Pentagon & Attributes */}
-        <div className="lg:col-span-6 space-y-4">
+        {/* Right Column: Core Competencies Pentagon & Attributes */}
+        <div className="lg:col-span-6 space-y-3.5 sm:space-y-4">
           <SocialStatsRadar />
 
           {/* Combat Attributes Gauge */}
-          <div className="bg-[#FFE600] border-4 border-black p-4 p4-skew shadow-[8px_8px_0px_#0c0b05]">
+          <div className="bg-[#FFE600] border-3 sm:border-4 border-black p-3.5 sm:p-4 p4-skew shadow-[6px_6px_0px_#0c0b05] sm:shadow-[8px_8px_0px_#0c0b05]">
             <div className="p4-skew-reverse">
               <h4 className="font-display font-p4-display text-lg text-black tracking-wider mb-2.5 flex items-center gap-2">
                 <Zap size={17} className="text-[#FF6600]" />
-                COMBAT ATTRIBUTES [LEVEL 99]
+                TECHNICAL PERFORMANCE ATTRIBUTES [LV. 99]
               </h4>
               <div className="space-y-1.5 font-mono text-xs">
                 {combatStats.map((st, i) => (

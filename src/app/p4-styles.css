@@ -9,22 +9,22 @@
 }
 
 :root {
-  --p4-yellow: #FFE600;
-  --p4-yellow-bright: #FFF000;
-  --p4-orange: #FF6600;
-  --p4-black: #0c0b05;
-  --p4-dark: #16150a;
-  --p4-white: #FFFFFF;
+  --alpha-yellow: #FFE600;
+  --alpha-yellow-bright: #FFF000;
+  --alpha-orange: #FF6600;
+  --alpha-black: #0c0b05;
+  --alpha-dark: #16150a;
+  --alpha-white: #FFFFFF;
 }
 
-/* Persona 4 Display Font */
+/* Alpha Protocol Display Font */
 .font-p4-display {
   font-family: 'Impact', 'Arial Black', system-ui, sans-serif;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-/* Persona 4 Characteristic Skews */
+/* Tactical Angle Skews */
 .p4-skew {
   transform: skewX(-8deg);
 }
@@ -32,7 +32,7 @@
   transform: skewX(8deg);
 }
 
-/* Yasogami High Houndstooth Pattern */
+/* Tactical Houndstooth Pattern */
 .bg-houndstooth {
   background-color: #0c0b05;
   background-image: 
