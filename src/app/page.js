@@ -35,8 +35,8 @@ export default function Home() {
           sound.playBack();
           sound.playTVStatic();
           setIsWiping(true);
-          setTimeout(() => setActiveTab('MENU'), 120);
-          setTimeout(() => setIsWiping(false), 320);
+          setActiveTab('MENU');
+          setTimeout(() => setIsWiping(false), 200);
         }
       }
     };
@@ -50,19 +50,16 @@ export default function Home() {
   }, [activeTab]);
 
   const handleTabChange = (newTab) => {
-    if (newTab === activeTab || isWiping) return;
+    if (newTab === activeTab) return;
 
     sound.playSelect();
     sound.playTVStatic();
     setIsWiping(true);
-
-    setTimeout(() => {
-      setActiveTab(newTab);
-    }, 120);
+    setActiveTab(newTab);
 
     setTimeout(() => {
       setIsWiping(false);
-    }, 320);
+    }, 200);
   };
 
   return (
@@ -108,14 +105,14 @@ export default function Home() {
         <AnimatePresence mode="wait">
           
           {/* MAIN MENU */}
-          {activeTab === 'MENU' && !isWiping && (
+          {activeTab === 'MENU' && (
             <motion.div
               key="menu"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="w-full max-w-6xl my-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center py-2"
+              initial={{ opacity: 0, y: 14, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.99 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-6xl my-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center py-2 will-change-transform"
             >
               {/* Left Column: Interactive Retro TV Monitor (Desktop) */}
               <div className="hidden lg:flex lg:col-span-5 items-center justify-center">
@@ -166,35 +163,35 @@ export default function Home() {
           )}
 
           {/* STATUS SCREEN */}
-          {activeTab === 'STATUS' && !isWiping && (
+          {activeTab === 'STATUS' && (
             <div className="w-full max-w-5xl my-auto py-2">
               <P4StatusView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* EQUIP / ARSENAL SCREEN */}
-          {activeTab === 'ARSENAL' && !isWiping && (
+          {activeTab === 'ARSENAL' && (
             <div className="w-full max-w-5xl my-auto py-2">
               <P4ArsenalView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* SYSTEM PILLARS SCREEN */}
-          {activeTab === 'SOCIAL_LINKS' && !isWiping && (
+          {activeTab === 'SOCIAL_LINKS' && (
             <div className="w-full max-w-5xl my-auto py-2">
               <P4SocialLinksView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* SIDE QUESTS / HOBBIES SCREEN */}
-          {activeTab === 'HOBBIES' && !isWiping && (
+          {activeTab === 'HOBBIES' && (
             <div className="w-full max-w-5xl my-auto py-2">
               <HobbiesView onBack={() => handleTabChange('MENU')} />
             </div>
           )}
 
           {/* COMMS TERMINAL TRANSMIT SCREEN */}
-          {activeTab === 'SYSTEM' && !isWiping && (
+          {activeTab === 'SYSTEM' && (
             <div className="w-full max-w-4xl my-auto py-2">
               <P4SystemView onBack={() => handleTabChange('MENU')} />
             </div>
