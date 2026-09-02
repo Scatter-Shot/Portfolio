@@ -5,6 +5,7 @@ import CustomCursor from '@/components/CustomCursor';
 import P4AnimatedBackground from '@/components/P4AnimatedBackground';
 import P4RetroTVStage from '@/components/P4RetroTVStage';
 import P4TVStatic from '@/components/P4TVStatic';
+import CRTBootScreen from '@/components/CRTBootScreen';
 import WeatherWidget from '@/components/WeatherWidget';
 import P4MenuButton from '@/components/P4MenuButton';
 import P4StatusView from '@/components/P4StatusView';
@@ -15,6 +16,7 @@ import P4SystemView from '@/components/P4SystemView';
 import { sound } from '@/utils/soundEngine';
 
 export default function Home() {
+  const [isPoweredOn, setIsPoweredOn] = useState(false);
   const [activeTab, setActiveTab] = useState('MENU'); // 'MENU', 'STATUS', 'ARSENAL', 'SOCIAL_LINKS', 'HOBBIES', 'SYSTEM'
   const [isWiping, setIsWiping] = useState(false);
 
@@ -23,7 +25,6 @@ export default function Home() {
     const handleKeyDown = (e) => {
       const isEsc = e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
       if (isEsc) {
-        // Un-focus any active inputs/buttons so nothing traps the event
         if (document.activeElement && typeof document.activeElement.blur === 'function') {
           document.activeElement.blur();
         }
@@ -40,7 +41,6 @@ export default function Home() {
       }
     };
 
-    // Use capture phase on both window and document to guarantee receipt
     window.addEventListener('keydown', handleKeyDown, true);
     document.addEventListener('keydown', handleKeyDown, true);
     return () => {
@@ -69,13 +69,20 @@ export default function Home() {
     <main className="relative w-full h-screen bg-[#FFE600] overflow-hidden select-none flex flex-col font-sans">
       <CustomCursor />
 
+      {/* Interactive CRT TV Power-On Opening Sequence */}
+      <AnimatePresence>
+        {!isPoweredOn && (
+          <CRTBootScreen onComplete={() => setIsPoweredOn(true)} />
+        )}
+      </AnimatePresence>
+
       {/* 60fps Animated Canvas Background with Floating TVs & Pop Stars */}
       <P4AnimatedBackground />
 
       {/* Fast CRT TV Static Channel Wipe */}
       <P4TVStatic isVisible={isWiping} />
 
-      {/* Fixed Top Header HUD (Never covers content) */}
+      {/* Fixed Top Header HUD */}
       <header className="relative z-40 w-full flex-shrink-0 px-4 sm:px-8 md:px-12 py-2.5 border-b-3 sm:border-b-4 border-black bg-[#FFE600] flex items-center justify-between shadow-sm gap-2">
         {/* Left: Nexus Badge */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -96,7 +103,7 @@ export default function Home() {
         <WeatherWidget />
       </header>
 
-      {/* Fully Scrollable Viewport (Zero Clipping, Natural Smooth Scrolling) */}
+      {/* Fully Scrollable Viewport */}
       <div className="relative z-30 w-full flex-1 overflow-y-auto overflow-x-hidden flex flex-col items-center justify-start p-4 sm:px-8 md:px-12">
         <AnimatePresence mode="wait">
           
@@ -196,9 +203,17 @@ export default function Home() {
         </AnimatePresence>
       </div>
 
-      {/* Fixed Bottom Footer (Never covers content) */}
+      {/* Fixed Bottom Footer */}
       <footer className="relative z-40 w-full flex-shrink-0 px-4 sm:px-8 md:px-12 py-2 border-t-2 border-black bg-[#FFE600] flex justify-between items-center text-[9px] sm:text-[10px] font-mono text-[#0c0b05] font-bold uppercase tracking-wider sm:tracking-widest shadow-inner">
-        <span className="truncate">NEXUS CONSOLE ONLINE // PRESS [ESC] TO RETURN</span>
+        <div className="flex items-center gap-3 truncate">
+          <span>NEXUS CONSOLE ONLINE // [ESC] TO RETURN</span>
+          <button
+            onClick={() => { sound.playSelect(); setIsPoweredOn(false); }}
+            className="hidden sm:inline-block px-2 py-0.5 bg-black text-[#FFE600] hover:bg-white hover:text-black border border-black font-black transition-colors"
+          >
+            ↺ REPLAY TV INTRO
+          </button>
+        </div>
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <span className="rainbow-strip w-10 sm:w-14 h-2 border border-black hidden sm:inline-block" />
           <span>NEXUS ENGINE // v6.5</span>

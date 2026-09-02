@@ -134,6 +134,81 @@ class SoundEngine {
       noise.stop(this.ctx.currentTime + 0.12);
     } catch (e) {}
   }
+
+  // 5. Authentic CRT TV Power-On Boot Sound (High-voltage degauss + static crackle + power chime)
+  playCRTBootSound() {
+    try {
+      this.init();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
+
+      // Part A: High Voltage Coil Whistle (rising transformer frequency)
+      const flyback = this.ctx.createOscillator();
+      const flybackGain = this.ctx.createGain();
+      flyback.type = 'sine';
+      flyback.frequency.setValueAtTime(12000, now);
+      flyback.frequency.exponentialRampToValueAtTime(15734, now + 0.15);
+      flybackGain.gain.setValueAtTime(0.04, now);
+      flybackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+      flyback.connect(flybackGain);
+      flybackGain.connect(this.ctx.destination);
+      flyback.start(now);
+      flyback.stop(now + 0.35);
+
+      // Part B: Degauss Low-Frequency "Thump"
+      const thump = this.ctx.createOscillator();
+      const thumpGain = this.ctx.createGain();
+      thump.type = 'triangle';
+      thump.frequency.setValueAtTime(120, now);
+      thump.frequency.exponentialRampToValueAtTime(40, now + 0.25);
+      thumpGain.gain.setValueAtTime(0.18, now);
+      thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+      thump.connect(thumpGain);
+      thumpGain.connect(this.ctx.destination);
+      thump.start(now);
+      thump.stop(now + 0.28);
+
+      // Part C: Static Crackle Burst
+      const bufferSize = this.ctx.sampleRate * 0.22;
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(2400, now);
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.12, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.ctx.destination);
+      noise.start(now);
+      noise.stop(now + 0.22);
+
+      // Part D: Ascending Boot Chime
+      [
+        { freq: 440, time: 0.12 },
+        { freq: 554.37, time: 0.18 },
+        { freq: 659.25, time: 0.24 },
+        { freq: 880, time: 0.30 }
+      ].forEach((note) => {
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(note.freq, now + note.time);
+        g.gain.setValueAtTime(0.1, now + note.time);
+        g.gain.exponentialRampToValueAtTime(0.001, now + note.time + 0.35);
+        osc.connect(g);
+        g.connect(this.ctx.destination);
+        osc.start(now + note.time);
+        osc.stop(now + note.time + 0.35);
+      });
+    } catch (e) {}
+  }
 }
 
 export const sound = new SoundEngine();
