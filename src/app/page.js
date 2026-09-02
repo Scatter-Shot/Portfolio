@@ -10,22 +10,43 @@ import P4MenuButton from '@/components/P4MenuButton';
 import P4StatusView from '@/components/P4StatusView';
 import P4ArsenalView from '@/components/P4ArsenalView';
 import P4SocialLinksView from '@/components/P4SocialLinksView';
+import HobbiesView from '@/components/HobbiesView';
 import P4SystemView from '@/components/P4SystemView';
 import { sound } from '@/utils/soundEngine';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('MENU'); // 'MENU', 'STATUS', 'ARSENAL', 'SOCIAL_LINKS', 'SYSTEM'
+  const [activeTab, setActiveTab] = useState('MENU'); // 'MENU', 'STATUS', 'ARSENAL', 'SOCIAL_LINKS', 'HOBBIES', 'SYSTEM'
   const [isWiping, setIsWiping] = useState(false);
 
-  // Keyboard shortcut listener (ESC to return to MENU)
+  // Bulletproof Keyboard shortcut listener (ESC to return to MENU)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && activeTab !== 'MENU') {
-        handleTabChange('MENU');
+      const isEsc = e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27;
+      if (isEsc) {
+        // Un-focus any active inputs/buttons so nothing traps the event
+        if (document.activeElement && typeof document.activeElement.blur === 'function') {
+          document.activeElement.blur();
+        }
+
+        if (activeTab !== 'MENU') {
+          e.preventDefault();
+          e.stopPropagation();
+          sound.playBack();
+          sound.playTVStatic();
+          setIsWiping(true);
+          setTimeout(() => setActiveTab('MENU'), 120);
+          setTimeout(() => setIsWiping(false), 320);
+        }
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    // Use capture phase on both window and document to guarantee receipt
+    window.addEventListener('keydown', handleKeyDown, true);
+    document.addEventListener('keydown', handleKeyDown, true);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, true);
+      document.removeEventListener('keydown', handleKeyDown, true);
+    };
   }, [activeTab]);
 
   const handleTabChange = (newTab) => {
@@ -76,7 +97,7 @@ export default function Home() {
       </header>
 
       {/* Interactive Main Viewport */}
-      <div className="relative z-30 w-full flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 py-3 overflow-y-auto md:overflow-hidden">
+      <div className="relative z-30 w-full flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 py-2 sm:py-3 overflow-y-auto md:overflow-hidden">
         <AnimatePresence mode="wait">
           
           {/* MAIN MENU */}
@@ -87,7 +108,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center py-4 md:py-0"
+              className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center py-3 md:py-0"
             >
               {/* Left Column: Interactive Retro TV Monitor (Desktop) */}
               <div className="hidden lg:flex lg:col-span-5 items-center justify-center">
@@ -96,32 +117,33 @@ export default function Home() {
 
               {/* Right Column: Hero Commands */}
               <div className="lg:col-span-7 flex flex-col items-center lg:items-end w-full">
-                <div className="text-center lg:text-right mb-4 sm:mb-6">
-                  <div className="inline-block p4-skew bg-[#0c0b05] text-[#FFE600] px-3 py-0.5 border-2 border-black mb-2 shadow-[3px_3px_0px_#FF6600]">
+                <div className="text-center lg:text-right mb-3 sm:mb-4">
+                  <div className="inline-block p4-skew bg-[#0c0b05] text-[#FFE600] px-3 py-0.5 border-2 border-black mb-1.5 shadow-[3px_3px_0px_#FF6600]">
                     <span className="p4-skew-reverse font-mono text-[10px] sm:text-xs font-black tracking-[0.25em] sm:tracking-[0.3em] uppercase block">
                       NEXUS PROTOCOL // TACTICAL ARCHITECT
                     </span>
                   </div>
 
-                  <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-p4-display text-[#0c0b05] tracking-wider leading-none drop-shadow-[3px_3px_0px_#FFFFFF] sm:drop-shadow-[4px_4px_0px_#FFFFFF]">
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-p4-display text-[#0c0b05] tracking-wider leading-none drop-shadow-[3px_3px_0px_#FFFFFF] sm:drop-shadow-[4px_4px_0px_#FFFFFF]">
                     VARUN KR.<br />
                     <span className="text-[#0c0b05] bg-[#FFFFFF] px-2 border-3 sm:border-4 border-black inline-block mt-1 shadow-[4px_4px_0px_#0c0b05] sm:shadow-[5px_5px_0px_#0c0b05]">
                       KAUSHIK
                     </span>
                   </h1>
                   
-                  <p className="font-mono text-[10px] sm:text-xs text-[#0c0b05] font-black mt-2 sm:mt-2.5 tracking-wider sm:tracking-widest uppercase">
+                  <p className="font-mono text-[10px] sm:text-xs text-[#0c0b05] font-black mt-2 tracking-wider sm:tracking-widest uppercase">
                     CSE UNDERGRAD // C++ & FRONTEND ARCHITECT
                   </p>
                 </div>
 
-                {/* 4 Command Buttons */}
+                {/* 5 Tactical Command Buttons */}
                 <div className="w-full max-w-md flex flex-col">
                   {[
                     { id: 'STATUS', label: '01. OPERATIVE DOSSIER', desc: 'Engineer ID & Technical Radar Pentagon' },
                     { id: 'ARSENAL', label: '02. ARSENAL (PROJECTS)', desc: 'Engine Systems & Web Platforms' },
                     { id: 'SOCIAL_LINKS', label: '03. SYSTEM PILLARS', desc: 'Architectural Disciplines & Milestones' },
-                    { id: 'SYSTEM', label: '04. COMMS TERMINAL', desc: 'Secure Relay Signal Transmission' },
+                    { id: 'HOBBIES', label: '04. SIDE QUESTS (HOBBIES)', desc: 'Games, Sports, Writing & Craft' },
+                    { id: 'SYSTEM', label: '05. COMMS TERMINAL', desc: 'Secure Relay Signal Transmission' },
                   ].map((item) => (
                     <P4MenuButton
                       key={item.id}
@@ -157,6 +179,13 @@ export default function Home() {
             </div>
           )}
 
+          {/* SIDE QUESTS / HOBBIES SCREEN */}
+          {activeTab === 'HOBBIES' && !isWiping && (
+            <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
+              <HobbiesView onBack={() => handleTabChange('MENU')} />
+            </div>
+          )}
+
           {/* COMMS TERMINAL TRANSMIT SCREEN */}
           {activeTab === 'SYSTEM' && !isWiping && (
             <div className="w-full max-h-[calc(100vh-140px)] overflow-y-auto pr-1 sm:pr-2 pb-6 md:pb-0">
@@ -169,10 +198,10 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="relative z-40 w-full px-4 sm:px-8 md:px-12 py-2 border-t-2 border-black bg-[#FFE600] flex justify-between items-center text-[9px] sm:text-[10px] font-mono text-[#0c0b05] font-bold uppercase tracking-wider sm:tracking-widest shadow-inner">
-        <span className="truncate">NEXUS CONSOLE ONLINE // [ESC] TO RETURN</span>
+        <span className="truncate">NEXUS CONSOLE ONLINE // PRESS [ESC] TO RETURN</span>
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <span className="rainbow-strip w-10 sm:w-14 h-2 border border-black hidden sm:inline-block" />
-          <span>NEXUS ENGINE // v6.0</span>
+          <span>NEXUS ENGINE // v6.2</span>
         </div>
       </footer>
     </main>
