@@ -59,7 +59,7 @@ export default function Home() {
 
     setTimeout(() => {
       setIsWiping(false);
-    }, 200);
+    }, 160);
   };
 
   return (

@@ -1,91 +1,40 @@
-// Web Audio API Tactical Sound Engine & Persona 3/4/5 Music Synthesizer
+// Web Audio API Tactical Sound Engine & Official Persona OST Player
 class SoundEngine {
   constructor() {
     this.ctx = null;
-    this.musicGain = null;
     this.analyser = null;
+    this.audioElement = null;
+    this.audioSource = null;
+    this.musicGain = null;
     this.isPlaying = false;
-    this.musicTimer = null;
-    this.currentStep = 0;
     this.currentTrackIdx = 0;
-    this.volume = 0.20;
+    this.volume = 0.45;
 
-    // The 3 Iconic Persona Instrumentals
+    // Real Persona In-Game OST Tracks (Stored in public/audio/)
     this.tracks = [
       {
         id: 'heartbeat',
         title: 'HEARTBEAT, HEARTBREAK',
-        origin: 'PERSONA 4 // LO-FI CITY POP',
-        bpm: 104,
-        stepDuration: 0.144, // 16th note
-        chords: [
-          [174.61, 220.00, 261.63, 329.63], // Fmaj7 (F3, A3, C4, E4)
-          [164.81, 196.00, 246.94, 293.66], // Em7 (E3, G3, B3, D4)
-          [146.83, 174.61, 220.00, 261.63], // Dm7 (D3, F3, A3, C4)
-          [116.54, 146.83, 174.61, 220.00]  // Bbmaj7 (Bb2, D3, F3, A3)
-        ],
-        bass: [
-          174.61, 0, 174.61, 261.63, 0, 174.61, 220.00, 164.81,
-          164.81, 0, 164.81, 246.94, 0, 164.81, 196.00, 146.83,
-          146.83, 0, 146.83, 220.00, 0, 146.83, 174.61, 130.81,
-          116.54, 0, 116.54, 174.61, 0, 116.54, 130.81, 146.83
-        ],
-        melody: [
-          523.25, 0, 440.00, 523.25, 587.33, 0, 523.25, 440.00,
-          392.00, 0, 349.23, 392.00, 440.00, 0, 0, 0,
-          523.25, 0, 440.00, 523.25, 587.33, 0, 659.25, 587.33,
-          523.25, 0, 440.00, 392.00, 349.23, 0, 0, 0
-        ]
+        origin: 'PERSONA 4 // SHIHOKO HIRATA',
+        file: '/audio/heartbeat.mp3',
+        tag: 'ORIGINAL P4 INABA CLOUDY THEME',
+        bpm: 104
       },
       {
         id: 'lifewillchange',
         title: 'LIFE WILL CHANGE',
-        origin: 'PERSONA 5 // HEIST ACID JAZZ',
-        bpm: 130,
-        stepDuration: 0.115, // 16th note
-        chords: [
-          [293.66, 349.23, 440.00, 587.33], // Dm (D4, F4, A4, D5)
-          [233.08, 293.66, 349.23, 440.00], // Bb (Bb3, D4, F4, A4)
-          [196.00, 233.08, 293.66, 349.23], // Gm7 (G3, Bb3, D4, F4)
-          [220.00, 277.18, 329.63, 440.00]  // A7 (A3, C#4, E4, A4)
-        ],
-        bass: [
-          146.83, 146.83, 0, 146.83, 174.61, 196.00, 207.65, 196.00,
-          116.54, 116.54, 0, 116.54, 146.83, 174.61, 196.00, 174.61,
-          98.00,  98.00,  0, 98.00,  116.54, 130.81, 146.83, 130.81,
-          110.00, 110.00, 0, 110.00, 138.59, 164.81, 174.61, 164.81
-        ],
-        melody: [
-          587.33, 0, 698.46, 783.99, 880.00, 0, 1046.50, 880.00,
-          783.99, 0, 698.46, 587.33, 0, 0, 0, 0,
-          880.00, 0, 783.99, 698.46, 783.99, 0, 880.00, 1046.50,
-          1174.66, 0, 1046.50, 880.00, 783.99, 0, 698.46, 587.33
-        ]
+        origin: 'PERSONA 5 // LYN INAUMI',
+        file: '/audio/life_will_change.mp3',
+        tag: 'ORIGINAL P5 PALACE HEIST THEME',
+        bpm: 130
       },
       {
         id: 'coloryournight',
         title: 'COLOR YOUR NIGHT',
-        origin: 'PERSONA 3 RELOAD // NEO-SOUL JAZZ',
-        bpm: 92,
-        stepDuration: 0.163, // 16th note
-        chords: [
-          [261.63, 329.63, 392.00, 493.88], // Cmaj7 (C4, E4, G4, B4)
-          [246.94, 293.66, 349.23, 440.00], // Bm7b5 (B3, D4, F4, A4)
-          [220.00, 261.63, 329.63, 392.00], // Am7 (A3, C4, E4, G4)
-          [174.61, 220.00, 261.63, 329.63]  // Fmaj7 (F3, A3, C4, E4)
-        ],
-        bass: [
-          130.81, 0, 130.81, 196.00, 0, 130.81, 164.81, 146.83,
-          123.47, 0, 123.47, 185.00, 0, 123.47, 164.81, 123.47,
-          110.00, 0, 110.00, 164.81, 0, 110.00, 130.81, 110.00,
-          87.31,  0, 87.31,  130.81, 0, 87.31,  110.00, 123.47
-        ],
-        melody: [
-          659.25, 0, 783.99, 987.77, 880.00, 0, 783.99, 659.25,
-          587.33, 0, 659.25, 0, 0, 0, 0, 0,
-          523.25, 0, 659.25, 783.99, 880.00, 0, 783.99, 659.25,
-          587.33, 0, 523.25, 0, 0, 0, 0, 0
-        ]
+        origin: 'PERSONA 3 RELOAD // AZUMI TAKAHASHI',
+        file: '/audio/color_your_night.mp3',
+        tag: 'ORIGINAL P3R NIGHT WALK THEME',
+        bpm: 92
       }
     ];
   }
@@ -96,13 +45,8 @@ class SoundEngine {
       if (AudioCtx) {
         this.ctx = new AudioCtx();
         this.analyser = this.ctx.createAnalyser();
-        this.analyser.fftSize = 32;
-        this.analyser.smoothingTimeConstant = 0.78;
-
-        this.musicGain = this.ctx.createGain();
-        this.musicGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
-        this.musicGain.connect(this.analyser);
-        this.analyser.connect(this.ctx.destination);
+        this.analyser.fftSize = 64;
+        this.analyser.smoothingTimeConstant = 0.82;
       }
     }
     if (this.ctx && this.ctx.state === 'suspended') {
@@ -110,7 +54,29 @@ class SoundEngine {
     }
   }
 
-  // UI Sound Effects
+  initAudioElement() {
+    if (typeof window === 'undefined') return;
+    if (!this.audioElement) {
+      this.audioElement = new Audio();
+      this.audioElement.preload = 'auto';
+      this.audioElement.loop = true;
+      this.audioElement.volume = this.volume;
+
+      // Connect HTML5 audio to Web Audio Analyser for live visualizer
+      try {
+        this.init();
+        if (this.ctx && !this.audioSource) {
+          this.audioSource = this.ctx.createMediaElementSource(this.audioElement);
+          this.audioSource.connect(this.analyser);
+          this.analyser.connect(this.ctx.destination);
+        }
+      } catch (e) {
+        // Fallback if mediaElementSource cannot be attached
+      }
+    }
+  }
+
+  // Tactical UI Sounds
   playHover() {
     try {
       this.init();
@@ -182,7 +148,7 @@ class SoundEngine {
     try {
       this.init();
       if (!this.ctx) return;
-      const bufferSize = this.ctx.sampleRate * 0.12;
+      const bufferSize = this.ctx.sampleRate * 0.1;
       const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
@@ -193,13 +159,13 @@ class SoundEngine {
       filter.frequency.setValueAtTime(1800, this.ctx.currentTime);
       filter.Q.setValueAtTime(3.0, this.ctx.currentTime);
       const gain = this.ctx.createGain();
-      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.07, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.1);
       noise.connect(filter);
       filter.connect(gain);
       gain.connect(this.ctx.destination);
       noise.start();
-      noise.stop(this.ctx.currentTime + 0.12);
+      noise.stop(this.ctx.currentTime + 0.1);
     } catch (e) {}
   }
 
@@ -232,7 +198,7 @@ class SoundEngine {
       thump.start(now);
       thump.stop(now + 0.28);
 
-      const bufferSize = this.ctx.sampleRate * 0.22;
+      const bufferSize = this.ctx.sampleRate * 0.2;
       const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
@@ -243,12 +209,12 @@ class SoundEngine {
       filter.frequency.setValueAtTime(2400, now);
       const noiseGain = this.ctx.createGain();
       noiseGain.gain.setValueAtTime(0.12, now);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
       noise.connect(filter);
       filter.connect(noiseGain);
       noiseGain.connect(this.ctx.destination);
       noise.start(now);
-      noise.stop(now + 0.22);
+      noise.stop(now + 0.2);
 
       [440, 554.37, 659.25, 880].forEach((freq, i) => {
         const osc = this.ctx.createOscillator();
@@ -286,147 +252,45 @@ class SoundEngine {
   }
 
   // =========================================================================
-  // MULTI-TRACK PERSONA MUSIC ENGINE (Heartbeat Heartbreak, Life Will Change, Color Your Night)
+  // REAL PERSONA IN-GAME MUSIC PLAYBACK
   // =========================================================================
   playTrack(index) {
-    this.stopMusic();
+    this.init();
+    this.initAudioElement();
+    if (!this.audioElement) return;
+
     this.currentTrackIdx = (index + this.tracks.length) % this.tracks.length;
-    this.currentStep = 0;
-    this.startMusic();
-  }
+    const track = this.tracks[this.currentTrackIdx];
 
-  nextTrack() {
-    const nextIdx = (this.currentTrackIdx + 1) % this.tracks.length;
-    this.playTrack(nextIdx);
-    return this.tracks[nextIdx];
-  }
-
-  getCurrentTrack() {
-    return this.tracks[this.currentTrackIdx];
+    try {
+      this.audioElement.pause();
+      this.audioElement.src = track.file;
+      this.audioElement.currentTime = 0;
+      this.audioElement.volume = this.volume;
+      const playPromise = this.audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            this.isPlaying = true;
+          })
+          .catch((err) => {
+            console.log("Audio playback waiting for user interaction:", err);
+            this.isPlaying = false;
+          });
+      }
+    } catch (e) {
+      console.error("Error playing audio track:", e);
+    }
   }
 
   startMusic() {
-    this.init();
-    if (!this.ctx || this.isPlaying) return;
-    this.isPlaying = true;
-    this.currentStep = 0;
-
-    const track = this.tracks[this.currentTrackIdx];
-    const stepDuration = track.stepDuration;
-
-    const playStep = () => {
-      if (!this.isPlaying || !this.ctx) return;
-      const now = this.ctx.currentTime;
-      const step16 = this.currentStep % 32;
-      const barIdx = Math.floor(step16 / 8);
-
-      // A. Chords on beats 1 and 3 of bar
-      if (step16 % 8 === 0 || step16 % 8 === 4) {
-        const chordNotes = track.chords[barIdx];
-        chordNotes.forEach((freq) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = track.id === 'lifewillchange' ? 'sawtooth' : 'triangle';
-          osc.frequency.setValueAtTime(freq, now);
-          gain.gain.setValueAtTime(track.id === 'lifewillchange' ? 0.03 : 0.045, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + stepDuration * 3.2);
-          osc.connect(gain);
-          gain.connect(this.musicGain);
-          osc.start(now);
-          osc.stop(now + stepDuration * 3.2);
-        });
-      }
-
-      // B. Bassline
-      const bassFreq = track.bass[step16];
-      if (bassFreq > 0) {
-        const bOsc = this.ctx.createOscillator();
-        const bGain = this.ctx.createGain();
-        bOsc.type = track.id === 'lifewillchange' ? 'sawtooth' : 'triangle';
-        bOsc.frequency.setValueAtTime(bassFreq, now);
-
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(track.id === 'lifewillchange' ? 700 : 420, now);
-        filter.Q.setValueAtTime(2.2, now);
-
-        bGain.gain.setValueAtTime(0.08, now);
-        bGain.gain.exponentialRampToValueAtTime(0.001, now + stepDuration * 1.5);
-
-        bOsc.connect(filter);
-        filter.connect(bGain);
-        bGain.connect(this.musicGain);
-
-        bOsc.start(now);
-        bOsc.stop(now + stepDuration * 1.5);
-      }
-
-      // C. Lead Melody Motif
-      const melFreq = track.melody[step16];
-      if (melFreq > 0) {
-        const mOsc = this.ctx.createOscillator();
-        const mGain = this.ctx.createGain();
-        mOsc.type = 'sine';
-        mOsc.frequency.setValueAtTime(melFreq, now);
-        mGain.gain.setValueAtTime(0.065, now);
-        mGain.gain.exponentialRampToValueAtTime(0.001, now + stepDuration * 1.7);
-        mOsc.connect(mGain);
-        mGain.connect(this.musicGain);
-        mOsc.start(now);
-        mOsc.stop(now + stepDuration * 1.7);
-      }
-
-      // D. Hi-hat and Snare Percussion
-      // Hi-hat on 8th notes
-      if (step16 % 2 === 0) {
-        const hBuffer = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.03, this.ctx.sampleRate);
-        const hData = hBuffer.getChannelData(0);
-        for (let i = 0; i < hData.length; i++) hData[i] = Math.random() * 2 - 1;
-        const hNoise = this.ctx.createBufferSource();
-        hNoise.buffer = hBuffer;
-        const hFilter = this.ctx.createBiquadFilter();
-        hFilter.type = 'highpass';
-        hFilter.frequency.setValueAtTime(6500, now);
-        const hGain = this.ctx.createGain();
-        hGain.gain.setValueAtTime(0.03, now);
-        hGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
-        hNoise.connect(hFilter);
-        hFilter.connect(hGain);
-        hGain.connect(this.musicGain);
-        hNoise.start(now);
-      }
-
-      // Snare on beats 2 and 4
-      if (step16 % 8 === 4) {
-        const sBuffer = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.08, this.ctx.sampleRate);
-        const sData = sBuffer.getChannelData(0);
-        for (let i = 0; i < sData.length; i++) sData[i] = Math.random() * 2 - 1;
-        const sNoise = this.ctx.createBufferSource();
-        sNoise.buffer = sBuffer;
-        const sFilter = this.ctx.createBiquadFilter();
-        sFilter.type = 'bandpass';
-        sFilter.frequency.setValueAtTime(2200, now);
-        const sGain = this.ctx.createGain();
-        sGain.gain.setValueAtTime(0.05, now);
-        sGain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-        sNoise.connect(sFilter);
-        sFilter.connect(sGain);
-        sGain.connect(this.musicGain);
-        sNoise.start(now);
-      }
-
-      this.currentStep++;
-      this.musicTimer = setTimeout(playStep, stepDuration * 1000);
-    };
-
-    playStep();
+    this.playTrack(this.currentTrackIdx);
   }
 
   stopMusic() {
     this.isPlaying = false;
-    if (this.musicTimer) {
-      clearTimeout(this.musicTimer);
-      this.musicTimer = null;
+    if (this.audioElement) {
+      this.audioElement.pause();
     }
   }
 
@@ -440,10 +304,20 @@ class SoundEngine {
     }
   }
 
+  nextTrack() {
+    const nextIdx = (this.currentTrackIdx + 1) % this.tracks.length;
+    this.playTrack(nextIdx);
+    return this.tracks[nextIdx];
+  }
+
+  getCurrentTrack() {
+    return this.tracks[this.currentTrackIdx];
+  }
+
   setVolume(val) {
     this.volume = val;
-    if (this.musicGain && this.ctx) {
-      this.musicGain.gain.setValueAtTime(val, this.ctx.currentTime);
+    if (this.audioElement) {
+      this.audioElement.volume = val;
     }
   }
 
