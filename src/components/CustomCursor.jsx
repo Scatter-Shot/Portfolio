@@ -1,98 +1,117 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 import { sound } from '@/utils/soundEngine';
 
 export default function CustomCursor() {
   const [isPointerFine, setIsPointerFine] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-  const [clicks, setClicks] = useState([]);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
 
-  const mouseX = useMotionValue(-100);
-  const mouseY = useMotionValue(-100);
-
-  const springConfig = { damping: 28, stiffness: 350, mass: 0.4 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
+  // Mouse coords & lerp positions
+  const pos = useRef({ x: -100, y: -100 });
+  const ringPos = useRef({ x: -100, y: -100 });
+  const isHovering = useRef(false);
+  const animFrameId = useRef(null);
 
   useEffect(() => {
-    // Only enable custom cursor on devices with mouse/fine pointer (desktop/laptop)
+    // Only enable on devices with fine pointer (mouse/trackpad on desktop/laptop)
     const isFine = window.matchMedia('(pointer: fine)').matches;
     setIsPointerFine(isFine);
     if (!isFine) return;
 
-    const updateMousePosition = (e) => {
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+    const handleMouseMove = (e) => {
+      pos.current.x = e.clientX;
+      pos.current.y = e.clientY;
+
+      // Move center dot instantly with zero latency
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+      }
     };
 
     const handleMouseOver = (e) => {
       if (['BUTTON', 'A', 'INPUT', 'TEXTAREA'].includes(e.target.tagName) || e.target.closest('button')) {
-        setIsHovering(true);
+        isHovering.current = true;
+        if (ringRef.current) {
+          ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%) scale(1.6) rotate(45deg)`;
+          ringRef.current.style.borderColor = '#FF6600';
+          ringRef.current.style.backgroundColor = 'rgba(255, 230, 0, 0.35)';
+        }
       } else {
-        setIsHovering(false);
+        isHovering.current = false;
+        if (ringRef.current) {
+          ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%) scale(1) rotate(0deg)`;
+          ringRef.current.style.borderColor = '#0c0b05';
+          ringRef.current.style.backgroundColor = 'rgba(255, 230, 0, 0.15)';
+        }
       }
     };
 
-    const handleClick = (e) => {
+    const handleMouseDown = (e) => {
       sound.playHover();
-      const newClick = { id: Date.now() + Math.random(), x: e.clientX, y: e.clientY };
-      setClicks((prev) => [...prev.slice(-4), newClick]);
-
-      setTimeout(() => {
-        setClicks((prev) => prev.filter((c) => c.id !== newClick.id));
-      }, 500);
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%) scale(0.8) rotate(15deg)`;
+      }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
-    window.addEventListener('mousedown', handleClick);
+    const handleMouseUp = () => {
+      if (ringRef.current) {
+        const scale = isHovering.current ? 1.6 : 1;
+        const rot = isHovering.current ? 45 : 0;
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`;
+      }
+    };
+
+    // Fluid 60/120/144Hz RAF loop for the trailing reticle
+    const loop = () => {
+      // Snappy lerp factor (0.28 = tight, responsive, zero perceived lag)
+      ringPos.current.x += (pos.current.x - ringPos.current.x) * 0.28;
+      ringPos.current.y += (pos.current.y - ringPos.current.y) * 0.28;
+
+      if (ringRef.current) {
+        const scale = isHovering.current ? 1.6 : 1;
+        const rot = isHovering.current ? 45 : 0;
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`;
+      }
+
+      animFrameId.current = requestAnimationFrame(loop);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    animFrameId.current = requestAnimationFrame(loop);
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseover', handleMouseOver);
-      window.removeEventListener('mousedown', handleClick);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+      if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
     };
-  }, [mouseX, mouseY]);
+  }, []);
 
   if (!isPointerFine) return null;
 
   return (
     <>
-      {/* Click Bursts */}
-      {clicks.map((click) => (
-        <div
-          key={click.id}
-          className="p4-ripple-effect z-[98]"
-          style={{
-            left: click.x - 25,
-            top: click.y - 25,
-            width: 50,
-            height: 50,
-          }}
-        />
-      ))}
-
-      {/* Center Reticle / Target Dot */}
-      <motion.div
-        className="fixed top-0 left-0 w-2.5 h-2.5 bg-[#0c0b05] border border-[#FFE600] pointer-events-none z-[100] transform -translate-x-1/2 -translate-y-1/2"
-        style={{ x: mouseX, y: mouseY }}
+      {/* Instant Center Reticle Target Dot (Zero Latency Direct GPU transform) */}
+      <div
+        ref={dotRef}
+        className="fixed top-0 left-0 w-2 h-2 bg-[#0c0b05] border border-[#FFE600] pointer-events-none z-[100] will-change-transform"
+        style={{ transform: 'translate3d(-100px, -100px, 0)' }}
       />
 
-      {/* Trailing Persona 4 TV Eyeglasses / Reticle */}
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border-2 border-black bg-[#FFE600]/20 pointer-events-none z-[99] transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center p4-skew shadow-[2px_2px_0px_#0c0b05]"
-        style={{ x: smoothX, y: smoothY }}
-        animate={{
-          scale: isHovering ? 1.8 : 1,
-          rotate: isHovering ? 45 : 0,
-          backgroundColor: isHovering ? 'rgba(255, 230, 0, 0.4)' : 'rgba(255, 230, 0, 0.1)',
-          borderColor: isHovering ? '#FF6600' : '#0c0b05',
-        }}
-        transition={{ duration: 0.15 }}
+      {/* Silky-Smooth Trailing Tactical Reticle (Hardware GPU accelerated) */}
+      <div
+        ref={ringRef}
+        className="fixed top-0 left-0 w-7 h-7 border-2 border-black bg-[#FFE600]/15 pointer-events-none z-[99] will-change-transform p4-skew shadow-[2px_2px_0px_#0c0b05] flex items-center justify-center transition-[background-color,border-color] duration-150"
+        style={{ transform: 'translate3d(-100px, -100px, 0)' }}
       >
         <div className="w-1 h-1 bg-black rounded-full" />
-      </motion.div>
+      </div>
     </>
   );
 }

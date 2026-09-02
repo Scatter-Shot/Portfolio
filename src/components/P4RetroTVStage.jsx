@@ -4,7 +4,7 @@ import { sound } from '@/utils/soundEngine';
 import { Tv, Activity, Radio, Cpu } from 'lucide-react';
 
 const CHANNELS = [
-  { num: 1, title: 'ALPHA CORE // KERNEL', subtitle: 'SYSTEM INITIALIZATION & TELEMETRY' },
+  { num: 1, title: 'NEXUS CORE // KERNEL', subtitle: 'SYSTEM INITIALIZATION & TELEMETRY' },
   { num: 2, title: 'C++ GRAPHICS // SHADERS', subtitle: 'OPENGL VERTEX PIPELINE ACTIVE' },
   { num: 3, title: 'REACT // APPARATUS', subtitle: 'DYNAMIC SSR RUNTIME SYNCED' },
   { num: 4, title: 'TACTICAL RADAR // SWEEP', subtitle: 'ATMOSPHERIC & NETWORK PROFILING' },
@@ -76,7 +76,7 @@ export default function P4RetroTVStage() {
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#FF6600] animate-pulse" />
                 <span className="font-mono text-[9px] text-[#FFE600] font-bold tracking-wider">
-                  ALPHA CRT // FEED 0{ch.num}
+                  NEXUS CRT // FEED 0{ch.num}
                 </span>
               </div>
 
@@ -101,7 +101,7 @@ export default function P4RetroTVStage() {
 
           {/* Tactical Operative Badge */}
           <div className="mt-2.5 flex items-center justify-between text-[10px] font-mono text-[#FFE600]">
-            <span>ALPHA PROTOCOL // UNIT #01</span>
+            <span>NEXUS PROTOCOL // UNIT #01</span>
             <span className="bg-[#FFE600] text-black px-2 py-0.5 font-bold">
               SIGNAL LOCK
             </span>

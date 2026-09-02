@@ -8,7 +8,7 @@ const GEAR_PROJECTS = [
   {
     slot: 'ENGINE MODULE',
     slotIcon: <Cpu size={18} className="text-[#FF6600]" />,
-    id: 'ALPHA-01',
+    id: 'NEXUS-01',
     name: '2D Procedural Sandbox RPG',
     category: 'SYSTEMS & SIMULATION // C++',
     summary: 'High-performance tile-based sandbox engine inspired by Terraria, featuring procedural simplex noise terrain, spatial hashing collision detection, dynamic lighting shaders, and custom physics simulation.',
@@ -19,7 +19,7 @@ const GEAR_PROJECTS = [
   {
     slot: 'FRONTEND SUITE',
     slotIcon: <Code2 size={18} className="text-yellow-400" />,
-    id: 'ALPHA-02',
+    id: 'NEXUS-02',
     name: 'Tactical Storefront Web Replicas',
     category: 'REACTIVE ARCHITECTURE // REACT',
     summary: 'Pixel-perfect, high-fidelity clones of major gaming platforms including Steam and Epic Games, focusing on responsive layout engines, dynamic cart pipelines, and physics-driven micro-interactions.',
@@ -30,7 +30,7 @@ const GEAR_PROJECTS = [
   {
     slot: 'DATABASE MATRIX',
     slotIcon: <Terminal size={18} className="text-emerald-400" />,
-    id: 'ALPHA-03',
+    id: 'NEXUS-03',
     name: 'Dark Fantasy Codex Database',
     category: 'KNOWLEDGE BASE & ENTITY GRAPH',
     summary: 'Interactive digital encyclopedia and entity hierarchy matrix engineered for cosmic horror fiction and multifaceted magic rule systems with graph relation mapping.',
@@ -58,7 +58,7 @@ export default function P4ArsenalView({ onBack }) {
           <div className="w-3 sm:w-4 h-7 sm:h-8 bg-[#FF6600] border-2 border-black flex-shrink-0" />
           <div>
             <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight">
-              ALPHA FORGE // SYSTEMS ARSENAL
+              NEXUS FORGE // SYSTEMS ARSENAL
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none mt-0.5">
               ARSENAL <span className="text-[#FF6600] text-2xl sm:text-3xl">/ PROJECTS</span>

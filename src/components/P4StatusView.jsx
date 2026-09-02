@@ -37,7 +37,7 @@ export default function P4StatusView({ onBack }) {
           <div className="w-3 sm:w-4 h-7 sm:h-8 bg-[#FF6600] border-2 border-black flex-shrink-0" />
           <div>
             <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight">
-              ALPHA PROTOCOL // OPERATIVE DOSSIER
+              NEXUS PROTOCOL // OPERATIVE DOSSIER
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none mt-0.5">
               STATUS <span className="text-[#FF6600] text-2xl sm:text-3xl">/ LEVEL 99</span>

@@ -28,7 +28,7 @@ export default function P4SystemView({ onBack }) {
           <div className="w-3 sm:w-4 h-7 sm:h-8 bg-[#FF6600] border-2 border-black flex-shrink-0" />
           <div>
             <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight">
-              ALPHA COMMS RELAY // DIRECT TRANSMISSION
+              NEXUS COMMS RELAY // DIRECT TRANSMISSION
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none mt-0.5">
               COMMS <span className="text-[#FF6600] text-2xl sm:text-3xl">/ TERMINAL</span>
@@ -83,7 +83,7 @@ export default function P4SystemView({ onBack }) {
               </div>
 
               <span className="absolute bottom-1.5 left-2 bg-black/90 px-1.5 py-0.5 text-[8px] font-mono text-gray-400 border border-white/20">
-                ALPHA // TELEMETRY LINK
+                NEXUS // TELEMETRY LINK
               </span>
             </div>
 

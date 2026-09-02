@@ -56,17 +56,17 @@ export default function Home() {
 
       {/* Top Header HUD */}
       <header className="relative z-40 w-full px-4 sm:px-8 md:px-12 pt-3 pb-2.5 border-b-3 sm:border-b-4 border-black bg-[#FFE600] flex items-center justify-between shadow-sm gap-2">
-        {/* Left: Alpha Badge */}
+        {/* Left: Nexus Badge */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <div className="w-8 h-8 sm:w-9 sm:h-9 bg-black border-2 border-black flex-shrink-0 flex items-center justify-center text-[#FFE600] font-display font-p4-display text-xl sm:text-2xl shadow-[2px_2px_0px_#FF6600] sm:shadow-[3px_3px_0px_#FF6600]">
-            α
+            ◈
           </div>
           <div className="min-w-0">
             <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight truncate">
-              ALPHA SYSTEMS // SPECIAL OPERATIONS
+              NEXUS PROTOCOL // SPECIAL OPERATIONS
             </span>
             <span className="font-mono text-[8px] sm:text-[9px] text-[#665500] tracking-wider hidden md:block font-bold">
-              PROJECT ALPHA // TACTICAL ARCHITECT CONSOLE
+              NEXUS ARCHITECT // SYSTEMS & FRONTEND ENG.
             </span>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function Home() {
         <WeatherWidget />
       </header>
 
-      {/* Interactive Main Viewport (Zero Overlaps) */}
+      {/* Interactive Main Viewport */}
       <div className="relative z-30 w-full flex-1 flex items-center justify-center px-4 sm:px-8 md:px-12 py-3 overflow-y-auto md:overflow-hidden">
         <AnimatePresence mode="wait">
           
@@ -99,7 +99,7 @@ export default function Home() {
                 <div className="text-center lg:text-right mb-4 sm:mb-6">
                   <div className="inline-block p4-skew bg-[#0c0b05] text-[#FFE600] px-3 py-0.5 border-2 border-black mb-2 shadow-[3px_3px_0px_#FF6600]">
                     <span className="p4-skew-reverse font-mono text-[10px] sm:text-xs font-black tracking-[0.25em] sm:tracking-[0.3em] uppercase block">
-                      ALPHA PROTOCOL // TACTICAL CONSOLE
+                      NEXUS PROTOCOL // TACTICAL ARCHITECT
                     </span>
                   </div>
 
@@ -169,10 +169,10 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="relative z-40 w-full px-4 sm:px-8 md:px-12 py-2 border-t-2 border-black bg-[#FFE600] flex justify-between items-center text-[9px] sm:text-[10px] font-mono text-[#0c0b05] font-bold uppercase tracking-wider sm:tracking-widest shadow-inner">
-        <span className="truncate">ALPHA CONSOLE ONLINE // [ESC] TO RETURN</span>
+        <span className="truncate">NEXUS CONSOLE ONLINE // [ESC] TO RETURN</span>
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <span className="rainbow-strip w-10 sm:w-14 h-2 border border-black hidden sm:inline-block" />
-          <span>ALPHA ENGINE // v6.0</span>
+          <span>NEXUS ENGINE // v6.0</span>
         </div>
       </footer>
     </main>
