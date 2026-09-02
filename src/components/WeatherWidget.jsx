@@ -4,10 +4,10 @@ import { sound } from '@/utils/soundEngine';
 import { Sun, CloudRain, Cloud, CloudFog, Tv } from 'lucide-react';
 
 const WEATHERS = [
-  { id: 'SUNNY', label: 'SUNNY', icon: <Sun size={20} className="text-[#FF6600]" />, desc: 'OPTIMAL INVESTIGATION' },
-  { id: 'RAINY', label: 'RAINY', icon: <CloudRain size={20} className="text-blue-500 animate-bounce" />, desc: 'MIDNIGHT CHANNEL ACTIVE' },
-  { id: 'FOGGY', label: 'FOGGY', icon: <CloudFog size={20} className="text-yellow-600" />, desc: 'SHADOW INVASION THREAT' },
-  { id: 'CLOUDY', label: 'CLOUDY', icon: <Cloud size={20} className="text-gray-500" />, desc: 'OVERCAST IN INABA' },
+  { id: 'SUNNY', label: 'SUNNY', icon: <Sun size={18} className="text-[#FF6600]" />, desc: 'OPTIMAL INVESTIGATION' },
+  { id: 'RAINY', label: 'RAINY', icon: <CloudRain size={18} className="text-blue-500 animate-bounce" />, desc: 'MIDNIGHT CHANNEL ACTIVE' },
+  { id: 'FOGGY', label: 'FOGGY', icon: <CloudFog size={18} className="text-yellow-600" />, desc: 'SHADOW INVASION THREAT' },
+  { id: 'CLOUDY', label: 'CLOUDY', icon: <Cloud size={18} className="text-gray-500" />, desc: 'OVERCAST IN INABA' },
 ];
 
 export default function WeatherWidget() {
@@ -40,28 +40,28 @@ export default function WeatherWidget() {
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
       {/* Persona 4 Retro Inaba TV Weather Box */}
       <div 
         onClick={cycleWeather}
         title="Click to toggle Inaba Weather"
         className="cursor-pointer group select-none"
       >
-        <div className="p4-skew bg-[#0c0b05] text-[#FFE600] border-2 border-black px-3.5 py-1.5 shadow-[4px_4px_0px_#0c0b05] group-hover:bg-[#FF6600] group-hover:text-white transition-all">
-          <div className="p4-skew-reverse flex items-center gap-2.5">
-            <div className="p-1 bg-[#FFE600] text-black rounded-sm group-hover:bg-white transition-colors">
+        <div className="p4-skew bg-[#0c0b05] text-[#FFE600] border-2 border-black px-2.5 sm:px-3.5 py-1 sm:py-1.5 shadow-[3px_3px_0px_#0c0b05] sm:shadow-[4px_4px_0px_#0c0b05] group-hover:bg-[#FF6600] group-hover:text-white transition-all">
+          <div className="p4-skew-reverse flex items-center gap-1.5 sm:gap-2.5">
+            <div className="p-0.5 sm:p-1 bg-[#FFE600] text-black rounded-sm group-hover:bg-white transition-colors">
               {currentWeather.icon}
             </div>
             <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-display font-p4-display text-sm tracking-wider leading-none">
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                <span className="font-display font-p4-display text-xs sm:text-sm tracking-wider leading-none">
                   {dateStr || '4/11 [THU]'}
                 </span>
-                <span className="font-mono text-[9px] bg-[#FFE600] text-black px-1 font-bold group-hover:bg-white">
+                <span className="font-mono text-[8px] sm:text-[9px] bg-[#FFE600] text-black px-1 font-bold group-hover:bg-white hidden sm:inline-block">
                   AFTER SCHOOL
                 </span>
               </div>
-              <span className="font-mono text-[9px] text-[#FFE600]/80 group-hover:text-white block tracking-widest uppercase mt-0.5">
+              <span className="font-mono text-[8px] sm:text-[9px] text-[#FFE600]/80 group-hover:text-white block tracking-widest uppercase mt-0.5">
                 INABA // {currentWeather.label}
               </span>
             </div>
@@ -70,7 +70,7 @@ export default function WeatherWidget() {
       </div>
 
       {/* Retro Digital Clock & Midnight Status */}
-      <div className="p4-skew bg-white text-black border-2 border-black px-3.5 py-1.5 shadow-[4px_4px_0px_#0c0b05] hidden sm:block">
+      <div className="p4-skew bg-white text-black border-2 border-black px-2.5 sm:px-3.5 py-1 sm:py-1.5 shadow-[3px_3px_0px_#0c0b05] sm:shadow-[4px_4px_0px_#0c0b05] hidden md:block">
         <div className="p4-skew-reverse flex items-center gap-2">
           <Tv size={15} className="text-[#FF6600]" />
           <div>

@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { sound } from '@/utils/soundEngine';
 
 export default function CustomCursor() {
+  const [isPointerFine, setIsPointerFine] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [clicks, setClicks] = useState([]);
 
@@ -15,6 +16,11 @@ export default function CustomCursor() {
   const smoothY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
+    // Only enable custom cursor on devices with mouse/fine pointer (desktop/laptop)
+    const isFine = window.matchMedia('(pointer: fine)').matches;
+    setIsPointerFine(isFine);
+    if (!isFine) return;
+
     const updateMousePosition = (e) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
@@ -49,6 +55,8 @@ export default function CustomCursor() {
     };
   }, [mouseX, mouseY]);
 
+  if (!isPointerFine) return null;
+
   return (
     <>
       {/* Click Bursts */}
@@ -76,7 +84,7 @@ export default function CustomCursor() {
         className="fixed top-0 left-0 w-8 h-8 border-2 border-black bg-[#FFE600]/20 pointer-events-none z-[99] transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center p4-skew shadow-[2px_2px_0px_#0c0b05]"
         style={{ x: smoothX, y: smoothY }}
         animate={{
-          scale: isHovering ? 2 : 1,
+          scale: isHovering ? 1.8 : 1,
           rotate: isHovering ? 45 : 0,
           backgroundColor: isHovering ? 'rgba(255, 230, 0, 0.4)' : 'rgba(255, 230, 0, 0.1)',
           borderColor: isHovering ? '#FF6600' : '#0c0b05',

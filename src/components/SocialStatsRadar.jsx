@@ -14,7 +14,6 @@ const SOCIAL_STATS = [
 export default function SocialStatsRadar() {
   const [activeStat, setActiveStat] = useState(0);
 
-  // SVG Coordinates calculation for a 5-point regular pentagon
   const size = 260;
   const center = size / 2;
   const radius = 95;
@@ -27,13 +26,11 @@ export default function SocialStatsRadar() {
     };
   };
 
-  // Outer baseline pentagon
   const outerPoints = SOCIAL_STATS.map(s => {
     const { x, y } = getCoordinates(s.angle, radius);
     return `${x},${y}`;
   }).join(' ');
 
-  // Value polygon
   const valuePoints = SOCIAL_STATS.map(s => {
     const r = (s.value / 100) * radius;
     const { x, y } = getCoordinates(s.angle, r);
@@ -41,27 +38,27 @@ export default function SocialStatsRadar() {
   }).join(' ');
 
   return (
-    <div className="bg-[#0c0b05] text-[#FFE600] border-4 border-black p-5 shadow-[8px_8px_0px_#0c0b05] p4-skew relative select-none">
+    <div className="bg-[#0c0b05] text-[#FFE600] border-4 border-black p-3.5 sm:p-5 shadow-[6px_6px_0px_#0c0b05] sm:shadow-[8px_8px_0px_#0c0b05] p4-skew relative select-none">
       <div className="p4-skew-reverse">
         
         {/* Header Ribbon */}
-        <div className="flex items-center justify-between border-b-2 border-[#FFE600]/40 pb-2 mb-4">
+        <div className="flex items-center justify-between border-b-2 border-[#FFE600]/40 pb-2 mb-3 sm:mb-4">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-[#FFE600] rotate-45 border border-black" />
-            <h4 className="font-display font-p4-display text-xl text-white tracking-wider">
+            <div className="w-2.5 h-2.5 bg-[#FFE600] rotate-45 border border-black" />
+            <h4 className="font-display font-p4-display text-lg sm:text-xl text-white tracking-wider">
               SOCIAL ATTRIBUTES // PENTAGON
             </h4>
           </div>
-          <span className="font-mono text-[10px] bg-[#FFE600] text-black px-2 py-0.5 font-black uppercase">
-            MAX LEVEL 5
+          <span className="font-mono text-[9px] sm:text-[10px] bg-[#FFE600] text-black px-1.5 sm:px-2 py-0.5 font-black uppercase">
+            MAX LV. 5
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
           
-          {/* Pentagon Diagram */}
-          <div className="relative flex items-center justify-center">
-            <svg width={size} height={size} className="overflow-visible">
+          {/* Responsive Pentagon Diagram */}
+          <div className="relative flex items-center justify-center p-2">
+            <svg viewBox={`0 0 ${size} ${size}`} className="w-full max-w-[200px] sm:max-w-[240px] md:max-w-[260px] h-auto overflow-visible">
               {/* Concentric Grid Lines */}
               {[0.25, 0.5, 0.75, 1].map((scale, i) => {
                 const pts = SOCIAL_STATS.map(s => {
@@ -131,17 +128,17 @@ export default function SocialStatsRadar() {
           </div>
 
           {/* Stat Description Card */}
-          <div className="bg-[#18160a] border-2 border-[#FFE600]/40 p-4">
+          <div className="bg-[#18160a] border-2 border-[#FFE600]/40 p-3 sm:p-4">
             <div className="flex justify-between items-center mb-1">
-              <span className="font-display font-p4-display text-2xl text-[#FFE600] tracking-wider">
+              <span className="font-display font-p4-display text-xl sm:text-2xl text-[#FFE600] tracking-wider">
                 {SOCIAL_STATS[activeStat].name}
               </span>
-              <span className="font-mono text-xs text-white bg-black px-2 py-0.5 border border-[#FFE600]/40 font-bold">
+              <span className="font-mono text-[10px] sm:text-xs text-white bg-black px-1.5 sm:px-2 py-0.5 border border-[#FFE600]/40 font-bold">
                 {SOCIAL_STATS[activeStat].rank}
               </span>
             </div>
             
-            <p className="font-mono text-xs text-gray-300 leading-relaxed mt-2 mb-4">
+            <p className="font-mono text-[11px] sm:text-xs text-gray-300 leading-relaxed mt-1.5 mb-3">
               {SOCIAL_STATS[activeStat].desc}
             </p>
 

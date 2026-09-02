@@ -69,18 +69,18 @@ export default function P4SocialLinksView({ onBack }) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 60 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="w-full max-w-5xl text-black ml-auto"
+      className="w-full max-w-5xl text-black ml-auto pb-6"
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b-4 border-black pb-3 mb-5">
-        <div className="flex items-center gap-3">
-          <div className="w-4 h-8 bg-[#FF6600] border-2 border-black" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 sm:border-b-4 border-black pb-2.5 sm:pb-3 mb-4 sm:mb-5">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-3 sm:w-4 h-7 sm:h-8 bg-[#FF6600] border-2 border-black flex-shrink-0" />
           <div>
-            <span className="font-mono text-xs font-black tracking-widest text-[#0c0b05] uppercase block">
+            <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight">
               COMMUNITY // TAROT ARCANA BONDS
             </span>
-            <h2 className="text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none">
-              SOCIAL LINKS <span className="text-[#FF6600] text-3xl">/ BONDS</span>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none mt-0.5">
+              SOCIAL LINKS <span className="text-[#FF6600] text-2xl sm:text-3xl">/ BONDS</span>
             </h2>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function P4SocialLinksView({ onBack }) {
         <button
           onClick={() => { sound.playBack(); onBack(); }}
           onMouseEnter={() => sound.playHover()}
-          className="px-8 py-2 border-4 border-black bg-[#0c0b05] text-[#FFE600] hover:bg-[#FF6600] hover:text-white font-display font-p4-display text-xl p4-skew transition-all shadow-[6px_6px_0px_#0c0b05]"
+          className="px-5 sm:px-8 py-1.5 sm:py-2 border-3 sm:border-4 border-black bg-[#0c0b05] text-[#FFE600] hover:bg-[#FF6600] hover:text-white font-display font-p4-display text-base sm:text-xl p4-skew transition-all shadow-[4px_4px_0px_#0c0b05] sm:shadow-[6px_6px_0px_#0c0b05] self-end sm:self-auto"
         >
           <span className="block p4-skew-reverse font-black tracking-widest">
             ESC // BACK
@@ -96,9 +96,9 @@ export default function P4SocialLinksView({ onBack }) {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5">
         {/* Left: Social Links Card Deck */}
-        <div className="md:col-span-5 flex flex-col space-y-2.5">
+        <div className="md:col-span-5 flex flex-col space-y-2 sm:space-y-2.5">
           {SOCIAL_LINKS.map((link, idx) => {
             const isSelected = idx === selectedIdx;
             return (
@@ -106,22 +106,22 @@ export default function P4SocialLinksView({ onBack }) {
                 key={link.arcana}
                 onClick={() => { sound.playSelect(); setSelectedIdx(idx); }}
                 onMouseEnter={() => sound.playHover()}
-                className={`p-3.5 text-left border-4 border-black p4-skew transition-all ${
+                className={`p-3 sm:p-3.5 text-left border-3 sm:border-4 border-black p4-skew transition-all ${
                   isSelected
-                    ? 'bg-[#0c0b05] text-[#FFE600] shadow-[8px_8px_0px_#FF6600] translate-x-1'
-                    : 'bg-[#FFE600] text-black shadow-[6px_6px_0px_#0c0b05] hover:bg-[#FFF000]'
+                    ? 'bg-[#0c0b05] text-[#FFE600] shadow-[5px_5px_0px_#FF6600] sm:shadow-[8px_8px_0px_#FF6600] translate-x-1'
+                    : 'bg-[#FFE600] text-black shadow-[4px_4px_0px_#0c0b05] sm:shadow-[6px_6px_0px_#0c0b05] hover:bg-[#FFF000]'
                 }`}
               >
                 <div className="p4-skew-reverse flex items-center justify-between">
                   <div>
-                    <span className="font-mono text-[10px] font-black uppercase tracking-wider block">
+                    <span className="font-mono text-[9px] sm:text-[10px] font-black uppercase tracking-wider block">
                       {link.arcana}
                     </span>
-                    <span className="font-display font-p4-display text-lg block tracking-wider leading-snug">
+                    <span className="font-display font-p4-display text-base sm:text-lg block tracking-wider leading-snug">
                       {link.character}
                     </span>
                   </div>
-                  <span className="font-mono text-[10px] bg-black text-[#FFE600] px-2 py-0.5 border border-[#FFE600]/40 font-black">
+                  <span className="font-mono text-[9px] sm:text-[10px] bg-black text-[#FFE600] px-1.5 sm:px-2 py-0.5 border border-[#FFE600]/40 font-black">
                     {link.rank}
                   </span>
                 </div>
@@ -131,7 +131,7 @@ export default function P4SocialLinksView({ onBack }) {
         </div>
 
         {/* Right: Detailed Social Link Bond Certificate */}
-        <div className="md:col-span-7 bg-[#0c0b05] text-white border-4 border-black p-6 md:p-8 p4-skew shadow-[8px_8px_0px_#0c0b05] relative">
+        <div className="md:col-span-7 bg-[#0c0b05] text-white border-3 sm:border-4 border-black p-4 sm:p-6 md:p-8 p4-skew shadow-[6px_6px_0px_#0c0b05] sm:shadow-[8px_8px_0px_#0c0b05] relative">
           <div className="p4-skew-reverse">
             <AnimatePresence mode="wait">
               <motion.div
@@ -141,41 +141,41 @@ export default function P4SocialLinksView({ onBack }) {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="flex items-center justify-between border-b-2 border-[#FFE600]/30 pb-3 mb-4">
+                <div className="flex items-center justify-between border-b-2 border-[#FFE600]/30 pb-2.5 sm:pb-3 mb-3 sm:mb-4">
                   <div>
-                    <span className="font-mono text-[10px] bg-[#FFE600] text-black px-2 py-0.5 font-bold uppercase tracking-widest inline-block mb-1">
+                    <span className="font-mono text-[9px] sm:text-[10px] bg-[#FFE600] text-black px-1.5 sm:px-2 py-0.5 font-bold uppercase tracking-widest inline-block mb-1">
                       {activeLink.arcana}
                     </span>
-                    <h3 className="font-display font-p4-display text-3xl text-white">
+                    <h3 className="font-display font-p4-display text-2xl sm:text-3xl text-white">
                       {activeLink.character}
                     </h3>
-                    <span className="font-mono text-xs text-cyan-300 block mt-0.5 font-bold">
+                    <span className="font-mono text-[11px] sm:text-xs text-cyan-300 block mt-0.5 font-bold">
                       {activeLink.discipline}
                     </span>
                   </div>
                   <div className="text-right">
-                    <span className="font-display font-p4-display text-2xl text-[#FF6600] block">
+                    <span className="font-display font-p4-display text-xl sm:text-2xl text-[#FF6600] block">
                       RANK 10
                     </span>
-                    <span className="font-mono text-[9px] text-[#FFE600] uppercase font-bold">
+                    <span className="font-mono text-[8px] sm:text-[9px] text-[#FFE600] uppercase font-bold">
                       BOND MASTERED
                     </span>
                   </div>
                 </div>
 
-                <div className="bg-[#18160a] border-l-4 border-[#FFE600] p-3.5 mb-5 font-mono text-xs italic text-gray-200">
+                <div className="bg-[#18160a] border-l-4 border-[#FFE600] p-2.5 sm:p-3.5 mb-4 sm:mb-5 font-mono text-[11px] sm:text-xs italic text-gray-200">
                   {activeLink.quote}
                 </div>
 
                 {/* Milestones Unlocked */}
                 <div>
-                  <span className="font-mono text-[10px] text-[#FFE600] uppercase tracking-wider block mb-2.5 font-bold">
+                  <span className="font-mono text-[9px] sm:text-[10px] text-[#FFE600] uppercase tracking-wider block mb-2 sm:mb-2.5 font-bold">
                     UNLOCKED ARCANA ABILITIES & ACHIEVEMENTS:
                   </span>
-                  <div className="space-y-2 font-mono text-xs">
+                  <div className="space-y-1.5 sm:space-y-2 font-mono text-[11px] sm:text-xs">
                     {activeLink.milestones.map((ms, i) => (
-                      <div key={i} className="flex items-start gap-2 bg-[#121107] p-2.5 border border-[#FFE600]/20">
-                        <Star size={14} className="text-[#FFE600] flex-shrink-0 mt-0.5" />
+                      <div key={i} className="flex items-start gap-2 bg-[#121107] p-2 sm:p-2.5 border border-[#FFE600]/20">
+                        <Star size={13} className="text-[#FFE600] flex-shrink-0 mt-0.5" />
                         <span className="text-gray-200">{ms}</span>
                       </div>
                     ))}

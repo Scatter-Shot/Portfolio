@@ -34,15 +34,15 @@ export default function P4StatusView({ onBack }) {
       className="w-full max-w-5xl text-black ml-auto pb-6"
     >
       {/* P4 Header Bar */}
-      <div className="flex items-center justify-between border-b-4 border-black pb-3 mb-5">
-        <div className="flex items-center gap-3">
-          <div className="w-4 h-8 bg-[#FF6600] border-2 border-black" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 sm:border-b-4 border-black pb-2.5 sm:pb-3 mb-4 sm:mb-5">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="w-3 sm:w-4 h-7 sm:h-8 bg-[#FF6600] border-2 border-black flex-shrink-0" />
           <div>
-            <span className="font-mono text-xs font-black tracking-widest text-[#0c0b05] uppercase block">
+            <span className="font-mono text-[10px] sm:text-xs font-black tracking-widest text-[#0c0b05] uppercase block leading-tight">
               INVESTIGATION TEAM // OPERATIVE DOSSIER
             </span>
-            <h2 className="text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none">
-              STATUS <span className="text-[#FF6600] text-3xl">/ LEVEL 99</span>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-p4-display text-[#0c0b05] leading-none mt-0.5">
+              STATUS <span className="text-[#FF6600] text-2xl sm:text-3xl">/ LEVEL 99</span>
             </h2>
           </div>
         </div>
@@ -50,7 +50,7 @@ export default function P4StatusView({ onBack }) {
         <button
           onClick={() => { sound.playBack(); onBack(); }}
           onMouseEnter={() => sound.playHover()}
-          className="px-8 py-2 border-4 border-black bg-[#0c0b05] text-[#FFE600] hover:bg-[#FF6600] hover:text-white font-display font-p4-display text-xl p4-skew transition-all shadow-[6px_6px_0px_#0c0b05]"
+          className="px-5 sm:px-8 py-1.5 sm:py-2 border-3 sm:border-4 border-black bg-[#0c0b05] text-[#FFE600] hover:bg-[#FF6600] hover:text-white font-display font-p4-display text-base sm:text-xl p4-skew transition-all shadow-[4px_4px_0px_#0c0b05] sm:shadow-[6px_6px_0px_#0c0b05] self-end sm:self-auto"
         >
           <span className="block p4-skew-reverse font-black tracking-widest">
             ESC // BACK
