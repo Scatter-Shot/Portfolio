@@ -1,0 +1,109 @@
+@theme {
+  --font-display: 'Impact', 'Arial Black', system-ui, sans-serif;
+  --font-p3r: 'Impact', 'Arial Black', system-ui, sans-serif;
+  --color-p3cyan: #00E5FF;
+  --color-p3blue: #0055FF;
+  --color-p3dark: #010a1f;
+  --color-p3deep: #001533;
+  --color-p3red: #FF1A4B;
+  --color-p3glass: rgba(1, 14, 40, 0.85);
+}
+
+:root {
+  --p3r-ocean-deep: #010a1f;
+  --p3r-ocean-dark: #001533;
+  --p3r-cyan: #00E5FF;
+  --p3r-cyan-glow: rgba(0, 229, 255, 0.6);
+  --p3r-white: #FFFFFF;
+  --p3r-white-glow: rgba(255, 255, 255, 0.8);
+  --p3r-red: #FF1A4B;
+}
+
+/* Typography Overrides for P3R Vibe */
+.font-p3r-display {
+  font-family: 'Impact', 'Arial Black', system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Slanted Containers */
+.p3r-slant {
+  transform: skewX(-12deg);
+}
+.p3r-slant-reverse {
+  transform: skewX(12deg);
+}
+
+/* Star Motif */
+.p3r-star {
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background-color: var(--p3r-cyan);
+}
+
+/* Giant background sliding text */
+.p3r-bg-text {
+  -webkit-text-stroke: 2px rgba(0, 229, 255, 0.12);
+  color: transparent;
+  font-family: 'Impact', 'Arial Black', sans-serif;
+  font-size: clamp(8rem, 22vw, 24rem);
+  line-height: 0.8;
+  white-space: nowrap;
+  opacity: 0.35;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* P3R Water Liquid Ripple Animation */
+@keyframes p3r-ripple {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.9;
+    border-width: 4px;
+  }
+  50% {
+    opacity: 0.6;
+    border-width: 2px;
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+.p3r-ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.2) 0%, rgba(0, 85, 255, 0.05) 70%, transparent 100%);
+  border: 2px solid var(--p3r-cyan);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+  animation: p3r-ripple 0.65s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+  pointer-events: none;
+}
+
+/* Tartarus rotating gear animation */
+@keyframes spin-clockwise {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-counter {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-clockwise 45s linear infinite;
+}
+.animate-spin-reverse-slow {
+  animation: spin-counter 30s linear infinite;
+}
+
+/* Water wave shimmer */
+@keyframes water-shimmer {
+  0% { transform: translateY(0) scaleY(1); }
+  50% { transform: translateY(-8px) scaleY(1.02); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+.animate-water-wave {
+  animation: water-shimmer 4s ease-in-out infinite;
+}

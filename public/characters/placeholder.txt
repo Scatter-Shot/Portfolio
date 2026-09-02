@@ -1,0 +1,1 @@
+Drop your transparent character PNGs here (e.g., makoto.png, aigis.png). The CharacterStage component will look in this folder for the characters!
