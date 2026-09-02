@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { sound } from '@/utils/soundEngine';
-import { Tv, Music, Volume2, VolumeX, Sparkles, Play, Pause } from 'lucide-react';
+import { Tv, Music, Volume2, VolumeX, SkipForward } from 'lucide-react';
 
 const BASE_CHANNELS = [
   { num: 1, title: 'NEXUS CORE // KERNEL', subtitle: 'SYSTEM INITIALIZATION & TELEMETRY' },
@@ -14,8 +14,8 @@ const BASE_CHANNELS = [
 
 const SECRET_CHANNEL = {
   num: 7,
-  title: 'PERSONA FM // SPECIALIST',
-  subtitle: 'TACTICAL JAZZ-FUNK GROOVE'
+  title: 'PERSONA JUKEBOX // FM',
+  subtitle: 'SELECT FROM 3 ICONIC TRACKS'
 };
 
 export default function P4RetroTVStage() {
@@ -26,11 +26,13 @@ export default function P4RetroTVStage() {
   const [isFlickering, setIsFlickering] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [trackIdx, setTrackIdx] = useState(0);
   const [eqBars, setEqBars] = useState([40, 65, 80, 50, 75, 90, 60, 45]);
 
   const channels = isUnlocked ? [...BASE_CHANNELS, SECRET_CHANNEL] : BASE_CHANNELS;
   const currentCh = channels[channelIdx] || channels[0];
   const isSecretCh = currentCh.num === 7;
+  const currentTrack = sound.tracks[trackIdx] || sound.tracks[0];
 
   // Real-time Visualizer Loop when secret channel is playing
   useEffect(() => {
@@ -38,15 +40,14 @@ export default function P4RetroTVStage() {
     const updateVisualizer = () => {
       if (isPlaying && isSecretCh) {
         const freq = sound.getFrequencyData();
-        // Map 8 frequency bins to heights
         setEqBars([
-          Math.max(25, (freq[0] || 0) * 0.4),
-          Math.max(30, (freq[1] || 0) * 0.45),
-          Math.max(45, (freq[2] || 0) * 0.5),
+          Math.max(25, (freq[0] || 0) * 0.42),
+          Math.max(30, (freq[1] || 0) * 0.46),
+          Math.max(45, (freq[2] || 0) * 0.52),
           Math.max(35, (freq[3] || 0) * 0.48),
-          Math.max(40, (freq[4] || 0) * 0.52),
-          Math.max(50, (freq[5] || 0) * 0.46),
-          Math.max(30, (freq[6] || 0) * 0.42),
+          Math.max(40, (freq[4] || 0) * 0.54),
+          Math.max(50, (freq[5] || 0) * 0.48),
+          Math.max(30, (freq[6] || 0) * 0.44),
           Math.max(20, (freq[7] || 0) * 0.38)
         ]);
       }
@@ -65,7 +66,7 @@ export default function P4RetroTVStage() {
   // Clean up music when unmounting
   useEffect(() => {
     return () => {
-      sound.stopGroove();
+      sound.stopMusic();
     };
   }, []);
 
@@ -90,9 +91,9 @@ export default function P4RetroTVStage() {
           setShowToast(true);
           sound.playUnlockFanfare();
           sound.playTVStatic();
-          // Jump to secret channel 7 and start playing the groove!
           setChannelIdx(6);
-          sound.startGroove();
+          sound.playTrack(0);
+          setTrackIdx(0);
           setIsPlaying(true);
           setTimeout(() => setShowToast(false), 3800);
         }, 400);
@@ -101,10 +102,10 @@ export default function P4RetroTVStage() {
 
     // Auto-stop music if switching away from secret channel
     if (isSecretCh && nextCh.num !== 7) {
-      sound.stopGroove();
+      sound.stopMusic();
       setIsPlaying(false);
     } else if (nextCh.num === 7 && !isPlaying) {
-      sound.startGroove();
+      sound.startMusic();
       setIsPlaying(true);
     }
 
@@ -119,15 +120,32 @@ export default function P4RetroTVStage() {
     }
 
     sound.playSelect();
-    const active = sound.toggleGroove();
+    const active = sound.toggleMusic();
     setIsPlaying(active);
+  };
+
+  const handleNextTrack = (e) => {
+    if (e) e.stopPropagation();
+    sound.playSelect();
+    const next = (trackIdx + 1) % sound.tracks.length;
+    setTrackIdx(next);
+    sound.playTrack(next);
+    setIsPlaying(true);
+  };
+
+  const selectTrack = (idx, e) => {
+    if (e) e.stopPropagation();
+    sound.playSelect();
+    setTrackIdx(idx);
+    sound.playTrack(idx);
+    setIsPlaying(true);
   };
 
   const toggleMute = (e) => {
     e.stopPropagation();
     sound.playSelect();
     if (isMuted) {
-      sound.setVolume(0.18);
+      sound.setVolume(0.20);
       setIsMuted(false);
     } else {
       sound.setVolume(0);
@@ -153,8 +171,8 @@ export default function P4RetroTVStage() {
             {/* Curved CRT Display */}
             <div 
               onClick={isSecretCh ? togglePlay : flipChannel}
-              title={isSecretCh ? "Click monitor to Play/Pause Persona Groove" : "Click monitor to flip channel"}
-              className="relative w-full h-48 md:h-56 bg-[#080703] border-4 border-[#0c0b05] rounded overflow-hidden flex flex-col items-center justify-center cursor-pointer group shadow-2xl"
+              title={isSecretCh ? "Click monitor to Play/Pause" : "Click monitor to flip channel"}
+              className="relative w-full h-52 md:h-60 bg-[#080703] border-4 border-[#0c0b05] rounded overflow-hidden flex flex-col items-center justify-center cursor-pointer group shadow-2xl"
             >
               {/* Scanlines */}
               <div className="absolute inset-0 crt-scanlines z-10 opacity-50 pointer-events-none" />
@@ -169,31 +187,35 @@ export default function P4RetroTVStage() {
                     ★ EASTER EGG UNLOCKED! ★
                   </span>
                   <span className="font-mono text-[9px] text-white bg-black px-2 py-0.5 mt-1.5 inline-block font-black tracking-widest uppercase border border-[#FFE600]">
-                    TUNING TO SECRET BROADCAST...
+                    TUNING TO PERSONA JUKEBOX...
                   </span>
                 </div>
               ) : isSecretCh ? (
-                /* SECRET CHANNEL 7: Interactive Persona Music Player */
-                <div className="relative z-20 text-center p-2.5 w-full flex flex-col items-center justify-center">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-[9px] bg-[#FF6600] text-white px-2 py-0.5 font-black uppercase tracking-wider flex items-center gap-1 shadow">
-                      <Music size={11} className="animate-spin-slow" />
-                      PERSONA TRIBUTE FM
+                /* SECRET CHANNEL 7: Interactive Persona 3/4/5 Jukebox */
+                <div className="relative z-20 text-center p-2 w-full flex flex-col items-center justify-between h-full">
+                  {/* Top Bar: Jukebox Badge & Status */}
+                  <div className="flex items-center justify-between w-full px-1">
+                    <span className="font-mono text-[8px] sm:text-[9px] bg-[#FF6600] text-white px-2 py-0.5 font-black uppercase tracking-wider flex items-center gap-1 shadow">
+                      <Music size={11} className={isPlaying ? "animate-spin-slow" : ""} />
+                      {currentTrack.origin}
                     </span>
                     <span className={`font-mono text-[8px] px-1.5 py-0.5 font-bold uppercase ${isPlaying ? 'bg-emerald-400 text-black' : 'bg-gray-700 text-gray-300'}`}>
-                      {isPlaying ? '● LIVE' : '⏸ PAUSED'}
+                      {isPlaying ? '● PLAYING' : '⏸ PAUSED'}
                     </span>
                   </div>
 
-                  <span className="font-display font-p4-display text-2xl md:text-3xl text-[#FFE600] block tracking-wider leading-none mt-1">
-                    SPECIALIST // GROOVE
-                  </span>
-                  <span className="font-mono text-[9px] text-gray-300 block tracking-widest uppercase mt-0.5">
-                    112 BPM // FUNKY NEO-SOUL JAZZ
-                  </span>
+                  {/* Track Title */}
+                  <div className="my-auto py-1">
+                    <span className="font-display font-p4-display text-xl sm:text-2xl md:text-3xl text-[#FFE600] block tracking-wider leading-none">
+                      {currentTrack.title}
+                    </span>
+                    <span className="font-mono text-[9px] text-gray-300 block tracking-widest uppercase mt-0.5">
+                      {currentTrack.bpm} BPM // SYNTHESIZED INSTRUMENTAL
+                    </span>
+                  </div>
 
                   {/* Real-time Dancing Audio Spectrum Visualizer */}
-                  <div className="flex items-end justify-center gap-1.5 h-12 w-44 mx-auto my-2 px-2 bg-black/60 border border-[#FFE600]/30 rounded-sm">
+                  <div className="flex items-end justify-center gap-1.5 h-10 w-44 mx-auto px-2 bg-black/70 border border-[#FFE600]/30 rounded-sm">
                     {eqBars.map((height, idx) => (
                       <div
                         key={idx}
@@ -206,9 +228,36 @@ export default function P4RetroTVStage() {
                     ))}
                   </div>
 
-                  <span className="font-mono text-[8px] text-white/70 block tracking-widest uppercase">
-                    [ CLICK SCREEN TO {isPlaying ? 'PAUSE' : 'PLAY'} ]
-                  </span>
+                  {/* 3 Track Selector Pills */}
+                  <div className="flex items-center gap-1 w-full justify-center mt-1 z-30">
+                    {[
+                      { id: 0, label: 'P4: HEARTBEAT' },
+                      { id: 1, label: 'P5: LIFE WILL CHANGE' },
+                      { id: 2, label: 'P3R: COLOR NIGHT' }
+                    ].map((t) => (
+                      <button
+                        key={t.id}
+                        onClick={(e) => selectTrack(t.id, e)}
+                        className={`font-mono text-[7px] sm:text-[8px] px-1.5 py-0.5 border font-bold uppercase transition-all ${
+                          trackIdx === t.id
+                            ? 'bg-[#FFE600] text-black border-white shadow'
+                            : 'bg-black/80 text-gray-400 border-gray-700 hover:text-white'
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center justify-between w-full px-1 text-[7px] sm:text-[8px] font-mono text-white/60 mt-1">
+                    <span>[CLICK MONITOR: {isPlaying ? 'PAUSE' : 'PLAY'}]</span>
+                    <button
+                      onClick={handleNextTrack}
+                      className="text-[#FFE600] hover:text-white flex items-center gap-0.5 font-bold uppercase"
+                    >
+                      <SkipForward size={10} /> NEXT
+                    </button>
+                  </div>
                 </div>
               ) : (
                 /* Standard Telemetry Feeds (Channels 1–6) */
@@ -235,7 +284,7 @@ export default function P4RetroTVStage() {
               <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${isSecretCh ? 'bg-emerald-400 animate-ping' : 'bg-[#FF6600] animate-pulse'}`} />
                 <span className="font-mono text-[9px] text-[#FFE600] font-bold tracking-wider">
-                  {isSecretCh ? 'CH 07 // SECRET TUNER' : `NEXUS CRT // FEED 0${currentCh.num}`}
+                  {isSecretCh ? 'CH 07 // JUKEBOX' : `NEXUS CRT // FEED 0${currentCh.num}`}
                 </span>
               </div>
 
@@ -263,7 +312,7 @@ export default function P4RetroTVStage() {
           {/* Tactical Operative Badge & Discovery Progress Indicator */}
           <div className="mt-2.5 flex items-center justify-between text-[10px] font-mono text-[#FFE600]">
             <span>
-              {isUnlocked ? '★ SECRET BROADCAST READY' : `DISCOVERY: ${visitedChannels.size}/6 CHANNELS`}
+              {isUnlocked ? '★ PERSONA JUKEBOX READY' : `DISCOVERY: ${visitedChannels.size}/6 CHANNELS`}
             </span>
             <span className={`px-2 py-0.5 font-bold ${isSecretCh ? 'bg-emerald-400 text-black animate-pulse' : 'bg-[#FFE600] text-black'}`}>
               {isSecretCh ? (isPlaying ? 'AUDIO ON' : 'PAUSED') : 'SIGNAL LOCK'}

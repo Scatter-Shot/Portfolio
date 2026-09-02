@@ -71,7 +71,7 @@ export default function P4StatusView({ onBack }) {
                   <span>ABES ENGINEERING COLLEGE // CSE</span>
                 </div>
                 <span className="font-mono text-[9px] sm:text-[10px] bg-[#FFE600] text-black px-1.5 py-0.5 font-bold">
-                  FINAL YEAR
+                  2ND YEAR
                 </span>
               </div>
 
