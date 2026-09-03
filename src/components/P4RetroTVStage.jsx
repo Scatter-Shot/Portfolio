@@ -233,7 +233,7 @@ export default function P4RetroTVStage() {
                   <div className="flex items-center gap-1 w-full justify-center mt-1 z-30">
                     {[
                       { id: 0, label: 'P4: HEARTBEAT' },
-                      { id: 1, label: 'P5: LIFE WILL CHANGE' },
+                      { id: 1, label: 'P5: BENEATH MASK' },
                       { id: 2, label: 'P3R: COLOR NIGHT' }
                     ].map((t) => (
                       <button

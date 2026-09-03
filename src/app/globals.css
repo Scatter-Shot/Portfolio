@@ -3,7 +3,7 @@
 
 /* Clean cursor hiding on pointer devices */
 @media (hover: hover) and (pointer: fine) {
-  body, button, a, input, textarea, select {
+  *, *::before, *::after {
     cursor: none !important;
   }
 }

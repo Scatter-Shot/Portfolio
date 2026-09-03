@@ -21,12 +21,12 @@ class SoundEngine {
         bpm: 104
       },
       {
-        id: 'lifewillchange',
-        title: 'LIFE WILL CHANGE',
-        origin: 'PERSONA 5 // LYN INAUMI',
-        file: '/audio/life_will_change.mp3',
-        tag: 'ORIGINAL P5 PALACE HEIST THEME',
-        bpm: 130
+        id: 'beneaththemask',
+        title: 'BENEATH THE MASK',
+        origin: 'PERSONA 5 // LYN INAIZUMI',
+        file: '/audio/beneath_the_mask.mp3',
+        tag: 'ORIGINAL P5 TOKYO RAIN THEME',
+        bpm: 116
       },
       {
         id: 'coloryournight',

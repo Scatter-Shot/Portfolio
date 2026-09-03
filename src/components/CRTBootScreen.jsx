@@ -32,7 +32,7 @@ export default function CRTBootScreen({ onComplete }) {
   return (
     <div
       onClick={handlePowerOn}
-      className="fixed inset-0 z-50 overflow-hidden bg-[#060502] select-none cursor-pointer flex items-center justify-center font-sans"
+      className="fixed inset-0 z-50 overflow-hidden bg-[#060502] select-none cursor-none flex items-center justify-center font-sans"
     >
       {/* 1. CRT Scanlines & Vignette */}
       <div className="absolute inset-0 crt-scanlines opacity-75 pointer-events-none z-10" />
